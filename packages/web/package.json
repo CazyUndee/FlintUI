@@ -1,0 +1,25 @@
+{
+  "name": "flintui-web",
+  "version": "1.0.0",
+  "description": "FlintUI for Web - A dark-themed UI toolkit with crimson accents and Outfit typography",
+  "keywords": [
+    "ui",
+    "css",
+    "dark-mode",
+    "design-system",
+    "components"
+  ],
+  "license": "GPL-3.0",
+  "author": "CazyUndee",
+  "type": "commonjs",
+  "main": "dist/flintui.js",
+  "style": "dist/flintui.css",
+  "files": [
+    "dist/",
+    "src/"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "npx live-server demo"
+  }
+}
