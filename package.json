@@ -2,8 +2,25 @@
   "name": "flintui",
   "version": "1.0.0",
   "description": "A dark-themed UI toolkit with crimson accents and Outfit typography",
+  "keywords": [
+    "ui",
+    "css",
+    "dark-mode",
+    "design-system",
+    "components"
+  ],
+  "homepage": "https://github.com/CazyUndee/FlintUI#readme",
+  "bugs": {
+    "url": "https://github.com/CazyUndee/FlintUI/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CazyUndee/FlintUI.git"
+  },
+  "license": "MIT",
+  "author": "CazyUndee",
+  "type": "commonjs",
   "main": "dist/flintui.js",
-  "style": "dist/flintui.css",
   "files": [
     "dist/",
     "src/"
@@ -12,12 +29,5 @@
     "build": "node scripts/build.js",
     "dev": "npx live-server demo"
   },
-  "keywords": [
-    "ui",
-    "css",
-    "dark-mode",
-    "design-system",
-    "components"
-  ],
-  "license": "MIT"
+  "style": "dist/flintui.css"
 }
