@@ -1,33 +1,13 @@
 {
-  "name": "flintui",
+  "name": "flintui-monorepo",
   "version": "1.0.0",
-  "description": "A dark-themed UI toolkit with crimson accents and Outfit typography",
-  "keywords": [
-    "ui",
-    "css",
-    "dark-mode",
-    "design-system",
-    "components"
-  ],
-  "homepage": "https://github.com/CazyUndee/FlintUI#readme",
-  "bugs": {
-    "url": "https://github.com/CazyUndee/FlintUI/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CazyUndee/FlintUI.git"
-  },
-  "license": "MIT",
-  "author": "CazyUndee",
-  "type": "commonjs",
-  "main": "dist/flintui.js",
-  "files": [
-    "dist/",
-    "src/"
+  "private": true,
+  "description": "FlintUI - Multi-platform UI toolkit",
+  "workspaces": [
+    "packages/*"
   ],
   "scripts": {
-    "build": "node scripts/build.js",
-    "dev": "npx live-server demo"
-  },
-  "style": "dist/flintui.css"
+    "build:web": "npm run build --workspace=flintui-web",
+    "dev:web": "npm run dev --workspace=flintui-web"
+  }
 }
