@@ -1,13 +1,49 @@
 {
-  "name": "flintui-monorepo",
-  "version": "1.0.0",
-  "private": true,
-  "description": "FlintUI - Multi-platform UI toolkit",
-  "workspaces": [
-    "packages/*"
+  "name": "cronixui",
+  "version": "1.0.4",
+  "description": "CronixUI - A dark-themed UI toolkit with crimson accents and Outfit typography",
+  "keywords": [
+    "ui",
+    "css",
+    "dark-mode",
+    "design-system",
+    "components",
+    "typescript",
+    "python",
+    "rust",
+    "golang"
+  ],
+  "license": "GPL-3.0",
+  "author": "CazyUndee",
+  "type": "commonjs",
+  "main": "packages/web/dist/cronixui.js",
+  "style": "packages/web/dist/cronixui.css",
+  "types": "packages/web/src/cronixui.d.ts",
+  "exports": {
+    ".": {
+      "import": "./packages/web/dist/cronixui.js",
+      "require": "./packages/web/dist/cronixui.js",
+      "style": "./packages/web/dist/cronixui.css",
+      "types": "./packages/web/src/cronixui.d.ts"
+    },
+    "./react": {
+      "import": "./packages/react/src/index.js",
+      "types": "./packages/react/src/index.d.ts"
+    },
+    "./css": "./packages/web/dist/cronixui.css",
+    "./css/min": "./packages/web/dist/cronixui.min.css",
+    "./js": "./packages/web/dist/cronixui.js",
+    "./js/min": "./packages/web/dist/cronixui.min.js"
+  },
+  "files": [
+    "packages/web/dist/",
+    "packages/web/src/",
+    "packages/react/src/",
+    "packages/win/CronixUI.WinUI/",
+    "README.md"
   ],
   "scripts": {
-    "build:web": "npm run build --workspace=flintui-web",
-    "dev:web": "npm run dev --workspace=flintui-web"
+    "build": "node packages/web/scripts/build.js",
+    "dev": "npx live-server packages/web/demo"
   }
 }

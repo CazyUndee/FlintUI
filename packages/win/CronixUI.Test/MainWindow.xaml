@@ -1,0 +1,87 @@
+<Window
+    x:Class="CronixUI.Test.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CronixUI.Test"
+    xmlns:fl="using:CronixUI.Controls">
+
+    <Grid Background="{StaticResource CnBackgroundBrush}">
+        <ScrollViewer>
+            <StackPanel Padding="40" Spacing="24">
+                <TextBlock Text="CronixUI Components"
+                    FontSize="28"
+                    FontWeight="Bold"
+                    Foreground="{StaticResource CnTextBrush}"/>
+
+            <!-- Buttons -->
+            <fl:FlCard>
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Buttons" FontWeight="SemiBold" Foreground="{StaticResource CnTextBrush}"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <fl:FlButton Content="Default"/>
+                        <fl:FlButton Content="Primary" Variant="primary"/>
+                        <fl:FlButton Content="Ghost" Variant="ghost"/>
+                        <fl:FlButton Content="Danger" Variant="danger"/>
+                    </StackPanel>
+                </StackPanel>
+            </fl:FlCard>
+
+            <!-- Inputs -->
+            <fl:FlCard>
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Inputs" FontWeight="SemiBold" Foreground="{StaticResource CnTextBrush}"/>
+                    <StackPanel Spacing="8">
+        <fl:FlTextBox PlaceholderText="Enter text..."/>
+        <PasswordBox PlaceholderText="Password"/>
+                    </StackPanel>
+                </StackPanel>
+            </fl:FlCard>
+
+            <!-- Toggle & Checkbox -->
+            <fl:FlCard>
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Toggle &amp; Checkbox" FontWeight="SemiBold" Foreground="{StaticResource CnTextBrush}"/>
+                    <StackPanel Orientation="Horizontal" Spacing="16">
+                        <fl:FlToggle/>
+                        <fl:FlCheckBox Content="Option 1"/>
+                        <fl:FlRadioButton Content="Choice A" GroupName="group1"/>
+                        <fl:FlRadioButton Content="Choice B" GroupName="group1"/>
+                    </StackPanel>
+                </StackPanel>
+            </fl:FlCard>
+
+            <!-- Progress -->
+            <fl:FlCard>
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Progress" FontWeight="SemiBold" Foreground="{StaticResource CnTextBrush}"/>
+                    <fl:FlProgressBar Value="60"/>
+                    <fl:FlSlider Value="50" Minimum="0" Maximum="100"/>
+                </StackPanel>
+            </fl:FlCard>
+
+            <!-- Badges & Avatar -->
+            <fl:FlCard>
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Badges &amp; Avatars" FontWeight="SemiBold" Foreground="{StaticResource CnTextBrush}"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <fl:FlBadge Content="Default"/>
+                        <fl:FlBadge Content="Success" Variant="success"/>
+                        <fl:FlBadge Content="Warning" Variant="warning"/>
+                        <fl:FlBadge Content="Error" Variant="error"/>
+                        <fl:FlAvatar Initials="CU"/>
+                    </StackPanel>
+                </StackPanel>
+            </fl:FlCard>
+
+            <!-- Spinner -->
+            <fl:FlCard>
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Spinner" FontWeight="SemiBold" Foreground="{StaticResource CnTextBrush}"/>
+                    <fl:FlSpinner/>
+                </StackPanel>
+            </fl:FlCard>
+
+        </StackPanel>
+    </ScrollViewer>
+    </Grid>
+</Window>

@@ -1,0 +1,11 @@
+[project]
+name = "cronixui"
+version = "1.0.2"
+description = "CronixUI - A dark-themed UI toolkit with crimson accents and Outfit typography"
+license = {text = "GPL-3.0"}
+authors = [{name = "CazyUndee"}]
+keywords = ["ui", "dark-mode", "design-system", "components"]
+requires-python = ">=3.8"
+
+[project.urls]
+Repository = "https://github.com/CazyUndee/CronixUI"

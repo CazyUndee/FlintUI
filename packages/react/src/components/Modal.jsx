@@ -30,10 +30,10 @@ export default function Modal({
 
   return (
     <div 
-      className={`fl-modal-backdrop fl-modal-open ${className}`}
+      className={`cn-modal-backdrop cn-modal-open ${className}`}
       onClick={(e) => e.target === e.currentTarget && onClose?.()}
     >
-      <div className="fl-modal" ref={modalRef}>
+      <div className="cn-modal" ref={modalRef}>
         {children}
       </div>
     </div>
@@ -42,10 +42,10 @@ export default function Modal({
 
 Modal.Header = function ModalHeader({ children, onClose, className = '' }) {
   return (
-    <div className={`fl-modal-header ${className}`}>
-      <div className="fl-modal-title">{children}</div>
+    <div className={`cn-modal-header ${className}`}>
+      <div className="cn-modal-title">{children}</div>
       {onClose && (
-        <button className="fl-modal-close" onClick={onClose}>
+        <button className="cn-modal-close" onClick={onClose}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -57,9 +57,9 @@ Modal.Header = function ModalHeader({ children, onClose, className = '' }) {
 };
 
 Modal.Body = function ModalBody({ children, className = '' }) {
-  return <div className={`fl-modal-body ${className}`}>{children}</div>;
+  return <div className={`cn-modal-body ${className}`}>{children}</div>;
 };
 
 Modal.Footer = function ModalFooter({ children, className = '' }) {
-  return <div className={`fl-modal-footer ${className}`}>{children}</div>;
+  return <div className={`cn-modal-footer ${className}`}>{children}</div>;
 };

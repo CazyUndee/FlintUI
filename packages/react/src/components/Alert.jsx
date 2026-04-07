@@ -18,8 +18,8 @@ export default function Alert({
   if (!visible) return null;
 
   return (
-    <div className={`fl-alert fl-alert-${type} ${className}`}>
-      <div className="fl-alert-icon">
+    <div className={`cn-alert cn-alert-${type} ${className}`}>
+      <div className="cn-alert-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           {type === 'success' && <polyline points="20 6 9 17 4 12"></polyline>}
           {type === 'error' && (
@@ -45,12 +45,12 @@ export default function Alert({
           )}
         </svg>
       </div>
-      <div className="fl-alert-content">
-        {title && <div className="fl-alert-title">{title}</div>}
-        <div className="fl-alert-message">{children}</div>
+      <div className="cn-alert-content">
+        {title && <div className="cn-alert-title">{title}</div>}
+        <div className="cn-alert-message">{children}</div>
       </div>
       {closable && (
-        <button className="fl-alert-close" onClick={handleClose}>
+        <button className="cn-alert-close" onClick={handleClose}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>

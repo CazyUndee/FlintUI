@@ -1,7 +1,13 @@
 {
-  "name": "flintui-win",
+  "name": "cronixui-win",
   "version": "1.0.0",
-  "description": "FlintUI for Windows (Native)",
+  "description": "CronixUI for Windows (WinUI 3)",
   "license": "GPL-3.0",
-  "author": "CazyUndee"
+  "author": "CazyUndee",
+  "keywords": ["winui", "windows", "ui", "dark-mode"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CazyUndee/CronixUI.git",
+    "directory": "packages/win"
+  }
 }

@@ -31,11 +31,11 @@ export default function Tabs({
 
   return (
     <div className={className}>
-      <div className="fl-tabs">
+      <div className="cn-tabs">
         {tabs.map((tab, idx) => (
           <div
             key={idx}
-            className={`fl-tab ${activeIndex === idx ? 'fl-tab-active' : ''}`}
+            className={`cn-tab ${activeIndex === idx ? 'cn-tab-active' : ''}`}
             onClick={() => handleTabClick(idx)}
           >
             {tab.props.children}
@@ -45,7 +45,7 @@ export default function Tabs({
       {panels.map((panel, idx) => (
         <div
           key={idx}
-          className={`fl-tab-panel ${activeIndex === idx ? 'fl-tab-panel-active' : ''}`}
+          className={`cn-tab-panel ${activeIndex === idx ? 'cn-tab-panel-active' : ''}`}
         >
           {panel.props.children}
         </div>

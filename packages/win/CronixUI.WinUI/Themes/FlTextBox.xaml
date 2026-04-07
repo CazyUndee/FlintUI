@@ -1,0 +1,39 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CronixUI.Controls">
+
+    <Style TargetType="local:CnTextBox">
+        <Setter Property="FontFamily" Value="{StaticResource CnFontFamily}"/>
+        <Setter Property="FontSize" Value="{StaticResource CnTextBase}"/>
+        <Setter Property="Foreground" Value="{StaticResource CnTextBrush}"/>
+        <Setter Property="Background" Value="{StaticResource CnSurfaceBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource CnBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource CnRadius}"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:CnTextBox">
+                    <Border x:Name="BorderElement"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <ScrollViewer x:Name="ContentElement"
+                                      HorizontalScrollMode="Auto"
+                                      VerticalScrollMode="Auto"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden"
+                                      IsTabStop="False"
+                                      ZoomMode="Disabled"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
+                                      Margin="{TemplateBinding Padding}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

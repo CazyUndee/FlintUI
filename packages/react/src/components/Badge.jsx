@@ -4,11 +4,11 @@ export default function Badge({
   size = 'md',
   className = '' 
 }) {
-  const variantClass = variant !== 'default' ? `fl-badge-${variant}` : '';
-  const sizeClass = size !== 'md' ? `fl-badge-${size}` : '';
+  const variantClass = variant !== 'default' ? `cn-badge-${variant}` : '';
+  const sizeClass = size !== 'md' ? `cn-badge-${size}` : '';
 
   return (
-    <span className={`fl-badge ${variantClass} ${sizeClass} ${className}`}>
+    <span className={`cn-badge ${variantClass} ${sizeClass} ${className}`}>
       {children}
     </span>
   );

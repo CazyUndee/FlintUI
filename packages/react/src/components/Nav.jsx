@@ -19,7 +19,7 @@ export default function Nav({
   };
 
   return (
-    <nav className={`fl-nav ${className}`}>
+    <nav className={`cn-nav ${className}`}>
       {children.map((child, idx) => {
         const isActive = child.props.active !== undefined 
           ? child.props.active 
@@ -41,7 +41,7 @@ export default function Nav({
 export function NavItem({ children, active = false, onClick, className = '' }) {
   return (
     <div 
-      className={`fl-nav-item ${active ? 'fl-nav-active' : ''} ${className}`}
+      className={`cn-nav-item ${active ? 'cn-nav-active' : ''} ${className}`}
       onClick={onClick}
     >
       {children}

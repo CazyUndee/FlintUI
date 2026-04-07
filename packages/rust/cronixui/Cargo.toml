@@ -1,0 +1,11 @@
+[package]
+name = "cronixui"
+version = "1.0.2"
+edition = "2021"
+description = "CronixUI - A dark-themed UI toolkit with crimson accents and Outfit typography"
+license = "GPL-3.0"
+authors = ["CazyUndee"]
+keywords = ["ui", "dark-mode", "design-system", "components"]
+repository = "https://github.com/CazyUndee/CronixUI"
+
+[dependencies]

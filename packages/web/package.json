@@ -1,7 +1,7 @@
 {
-  "name": "flintui-web",
-  "version": "1.0.0",
-  "description": "FlintUI for Web - A dark-themed UI toolkit with crimson accents and Outfit typography",
+  "name": "cronixui",
+  "version": "1.0.1",
+  "description": "CronixUI - A dark-themed UI toolkit with crimson accents and Outfit typography",
   "keywords": [
     "ui",
     "css",
@@ -12,8 +12,8 @@
   "license": "GPL-3.0",
   "author": "CazyUndee",
   "type": "commonjs",
-  "main": "dist/flintui.js",
-  "style": "dist/flintui.css",
+  "main": "dist/cronixui.js",
+  "style": "dist/cronixui.css",
   "files": [
     "dist/",
     "src/"

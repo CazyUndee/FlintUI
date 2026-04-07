@@ -1,3 +1,17 @@
 node_modules/
 .DS_Store
 *.log
+
+# Build artifacts
+dist/
+*.tgz
+
+# WinUI build outputs
+bin/
+obj/
+.vs/
+*.exe
+*.dll
+*.pdb
+*.appx
+*.msix

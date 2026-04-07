@@ -6,12 +6,12 @@ export default function Button({
   className = '',
   ...props 
 }) {
-  const variantClass = variant !== 'default' ? `fl-btn-${variant}` : '';
-  const sizeClass = size !== 'md' ? `fl-btn-${size}` : '';
+  const variantClass = variant !== 'default' ? `cn-btn-${variant}` : '';
+  const sizeClass = size !== 'md' ? `cn-btn-${size}` : '';
 
   return (
     <button 
-      className={`fl-btn ${variantClass} ${sizeClass} ${className}`}
+      className={`cn-btn ${variantClass} ${sizeClass} ${className}`}
       disabled={disabled}
       {...props}
     >

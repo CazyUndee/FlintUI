@@ -1,0 +1,809 @@
+/**
+ * CronixUI - Interactive Component Logic
+ * @version 1.0.0
+ */
+
+(function(global) {
+  'use strict';
+
+  // ========================================
+  // UTILITIES
+  // ========================================
+  function $(selector, context = document) {
+    return context.querySelector(selector);
+  }
+
+  function $$(selector, context = document) {
+    return Array.from(context.querySelectorAll(selector));
+  }
+
+  function createEl(tag, className, attrs = {}) {
+    const el = document.createElement(tag);
+    if (className) el.className = className;
+    Object.entries(attrs).forEach(([key, val]) => {
+      if (key === 'text') el.textContent = val;
+      else if (key === 'html') el.innerHTML = val;
+      else el.setAttribute(key, val);
+    });
+    return el;
+  }
+
+  // ========================================
+  // TOGGLE
+  // ========================================
+  class CronixToggle {
+    constructor(el) {
+      this.el = el;
+      this.input = el.querySelector('input');
+      this.box = el.querySelector('.cn-toggle-box');
+
+      if (this.el.tagName === 'DIV' && !this.input) {
+        el.addEventListener('click', () => this.toggle());
+      }
+
+      el._cnToggle = this;
+    }
+
+    toggle() {
+      this.el.classList.toggle('on');
+      this.el.dispatchEvent(new CustomEvent('change', {
+        detail: { value: this.isOn() }
+      }));
+    }
+
+    isOn() {
+      return this.el.classList.contains('on');
+    }
+
+    setOn(on) {
+      this.el.classList.toggle('on', on);
+    }
+  }
+
+  function initToggles() {
+    $$('.cn-toggle').forEach(el => {
+      if (!el._cnToggle) new CronixToggle(el);
+    });
+  }
+
+  // ========================================
+  // NAVIGATION
+  // ========================================
+  class CronixNav {
+    constructor(el) {
+      this.el = el;
+      this.items = $$('.cn-nav-item', el);
+      this.items.forEach(item => {
+        item.addEventListener('click', () => this.setActive(item));
+      });
+      el._cnNav = this;
+    }
+
+    setActive(activeItem) {
+      this.items.forEach(item => item.classList.remove('cn-nav-active'));
+      activeItem.classList.add('cn-nav-active');
+      this.el.dispatchEvent(new CustomEvent('change', {
+        detail: { item: activeItem }
+      }));
+    }
+  }
+
+  function initNavs() {
+    $$('.cn-nav').forEach(el => {
+      if (!el._cnNav) new CronixNav(el);
+    });
+  }
+
+  // ========================================
+  // TABS
+  // ========================================
+  class CronixTabs {
+    constructor(el) {
+      this.el = el;
+      this.tabs = $$('.cn-tab', el);
+      this.panels = $$('.cn-tab-panel', el.parentElement);
+
+      this.tabs.forEach((tab, i) => {
+        tab.addEventListener('click', () => this.setActive(i));
+      });
+
+      el._cnTabs = this;
+    }
+
+    setActive(index) {
+      this.tabs.forEach((tab, i) => {
+        tab.classList.toggle('cn-tab-active', i === index);
+      });
+      this.panels.forEach((panel, i) => {
+        panel.classList.toggle('cn-tab-panel-active', i === index);
+      });
+      this.el.dispatchEvent(new CustomEvent('change', {
+        detail: { index }
+      }));
+    }
+  }
+
+  function initTabs() {
+    $$('.cn-tabs').forEach(el => {
+      if (!el._cnTabs) new CronixTabs(el);
+    });
+  }
+
+  // ========================================
+  // ACCORDION
+  // ========================================
+  class CronixAccordion {
+    constructor(el) {
+      this.el = el;
+      this.items = $$('.cn-accordion-item', el);
+      this.multi = el.dataset.multi === 'true';
+
+      this.items.forEach(item => {
+        const header = $('.cn-accordion-header', item);
+        header.addEventListener('click', () => this.toggle(item));
+      });
+
+      el._cnAccordion = this;
+    }
+
+    toggle(item) {
+      const isOpen = item.classList.contains('cn-accordion-open');
+
+      if (!this.multi) {
+        this.items.forEach(i => i.classList.remove('cn-accordion-open'));
+      }
+
+      item.classList.toggle('cn-accordion-open', !isOpen);
+    }
+
+    openAll() {
+      this.items.forEach(item => item.classList.add('cn-accordion-open'));
+    }
+
+    closeAll() {
+      this.items.forEach(item => item.classList.remove('cn-accordion-open'));
+    }
+  }
+
+  function initAccordions() {
+    $$('.cn-accordion').forEach(el => {
+      if (!el._cnAccordion) new CronixAccordion(el);
+    });
+  }
+
+  // ========================================
+  // MODAL
+  // ========================================
+  class CronixModal {
+    constructor(el) {
+      this.el = el;
+      this.modal = $('.cn-modal', el);
+      this.closeBtn = $('.cn-modal-close', el);
+      this.onKeydown = this.onKeydown.bind(this);
+
+      if (this.closeBtn) {
+        this.closeBtn.addEventListener('click', () => this.close());
+      }
+
+      el.addEventListener('click', (e) => {
+        if (e.target === el) this.close();
+      });
+
+      el._cnModal = this;
+    }
+
+    open() {
+      this.el.classList.add('cn-modal-open');
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', this.onKeydown);
+      this.el.dispatchEvent(new CustomEvent('open'));
+    }
+
+    close() {
+      this.el.classList.remove('cn-modal-open');
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', this.onKeydown);
+      this.el.dispatchEvent(new CustomEvent('close'));
+    }
+
+    onKeydown(e) {
+      if (e.key === 'Escape') this.close();
+    }
+  }
+
+  function initModals() {
+    $$('.cn-modal-backdrop').forEach(el => {
+      if (!el._cnModal) new CronixModal(el);
+    });
+  }
+
+  // ========================================
+  // DROPDOWN
+  // ========================================
+  class CronixDropdown {
+    constructor(el) {
+      this.el = el;
+      this.trigger = $('.cn-dropdown-trigger', el) || el.querySelector('[data-dropdown-trigger]') || el;
+      this.menu = $('.cn-dropdown-menu', el);
+      this.onDocClick = this.onDocClick.bind(this);
+
+      this.trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggle();
+      });
+
+      this.menu.addEventListener('click', () => this.close());
+
+      el._cnDropdown = this;
+    }
+
+    open() {
+      this.el.classList.add('cn-dropdown-open');
+      document.addEventListener('click', this.onDocClick);
+    }
+
+    close() {
+      this.el.classList.remove('cn-dropdown-open');
+      document.removeEventListener('click', this.onDocClick);
+    }
+
+    toggle() {
+      if (this.el.classList.contains('cn-dropdown-open')) {
+        this.close();
+      } else {
+        this.open();
+      }
+    }
+
+    onDocClick(e) {
+      if (!this.el.contains(e.target)) {
+        this.close();
+      }
+    }
+  }
+
+  function initDropdowns() {
+    $$('.cn-dropdown').forEach(el => {
+      if (!el._cnDropdown) new CronixDropdown(el);
+    });
+  }
+
+  // ========================================
+  // TOAST
+  // ========================================
+  class CronixToast {
+    constructor(container) {
+      this.container = container || this.getOrCreateContainer();
+    }
+
+    getOrCreateContainer() {
+      let container = $('.cn-toast-container');
+      if (!container) {
+        container = createEl('div', 'cn-toast-container');
+        document.body.appendChild(container);
+      }
+      return container;
+    }
+
+    show(options) {
+      const {
+        title,
+        message,
+        type = 'info',
+        duration = 4000,
+        closable = true
+      } = options;
+
+      const toast = createEl('div', `cn-toast cn-toast-${type}`);
+      toast.innerHTML = `
+        <div class="cn-alert-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            ${this.getIcon(type)}
+          </svg>
+        </div>
+        <div class="cn-alert-content">
+          ${title ? `<div class="cn-alert-title">${title}</div>` : ''}
+          ${message ? `<div class="cn-alert-message">${message}</div>` : ''}
+        </div>
+        ${closable ? `
+          <button class="cn-alert-close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        ` : ''}
+      `;
+
+      if (closable) {
+        $('.cn-alert-close', toast).addEventListener('click', () => this.hide(toast));
+      }
+
+      this.container.appendChild(toast);
+
+      if (duration > 0) {
+        setTimeout(() => this.hide(toast), duration);
+      }
+
+      return toast;
+    }
+
+    hide(toast) {
+      toast.classList.add('cn-toast-leaving');
+      setTimeout(() => toast.remove(), 200);
+    }
+
+    getIcon(type) {
+      const icons = {
+        success: '<polyline points="20 6 9 17 4 12"></polyline>',
+        error: '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>',
+        warning: '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>',
+        info: '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>'
+      };
+      return icons[type] || icons.info;
+    }
+
+    success(message, title) { return this.show({ message, title, type: 'success' }); }
+    error(message, title) { return this.show({ message, title, type: 'error' }); }
+    warning(message, title) { return this.show({ message, title, type: 'warning' }); }
+    info(message, title) { return this.show({ message, title, type: 'info' }); }
+  }
+
+  // ========================================
+  // COMMAND PALETTE
+  // ========================================
+  class CronixCommandPalette {
+    constructor(el) {
+      this.el = el;
+      this.input = $('.cn-command-palette-input', el);
+      this.results = $('.cn-command-palette-results', el);
+      this.items = [];
+      this.activeIndex = -1;
+      this.onKeydown = this.onKeydown.bind(this);
+
+      this.input.addEventListener('input', () => this.filter());
+      this.input.addEventListener('keydown', (e) => this.onKeydown(e));
+      el.addEventListener('click', (e) => {
+        if (e.target === el) this.close();
+      });
+
+      el._cnCommandPalette = this;
+    }
+
+    setItems(items) {
+      this.items = items;
+      this.render();
+    }
+
+    render() {
+      const query = this.input.value.toLowerCase();
+      const filtered = this.items.filter(item =>
+        item.title.toLowerCase().includes(query) ||
+        (item.subtitle && item.subtitle.toLowerCase().includes(query))
+      );
+
+      this.results.innerHTML = filtered.map((item, i) => `
+        <div class="cn-command-item${i === 0 ? ' cn-command-item-active' : ''}" data-index="${i}">
+          ${item.icon ? `<div class="cn-command-item-icon">${item.icon}</div>` : ''}
+          <div class="cn-command-item-content">
+            <div class="cn-command-item-title">${item.title}</div>
+            ${item.subtitle ? `<div class="cn-command-item-subtitle">${item.subtitle}</div>` : ''}
+          </div>
+          ${item.kbd ? `<div class="cn-command-item-kbd">${item.kbd}</div>` : ''}
+        </div>
+      `).join('');
+
+      $$('.cn-command-item', this.results).forEach((item, i) => {
+        item.addEventListener('click', () => this.select(filtered[i]));
+        item.addEventListener('mouseenter', () => this.setActive(i));
+      });
+
+      this.activeIndex = filtered.length > 0 ? 0 : -1;
+    }
+
+    filter() {
+      this.render();
+    }
+
+    onKeydown(e) {
+      const items = $$('.cn-command-item', this.results);
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        this.setActive(Math.min(this.activeIndex + 1, items.length - 1));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        this.setActive(Math.max(this.activeIndex - 1, 0));
+      } else if (e.key === 'Enter' && this.activeIndex >= 0) {
+        e.preventDefault();
+        items[this.activeIndex].click();
+      }
+    }
+
+    setActive(index) {
+      const items = $$('.cn-command-item', this.results);
+      items.forEach((item, i) => item.classList.toggle('cn-command-item-active', i === index));
+      this.activeIndex = index;
+    }
+
+    select(item) {
+      if (item.action) item.action();
+      this.close();
+      this.el.dispatchEvent(new CustomEvent('select', { detail: item }));
+    }
+
+    open() {
+      this.el.classList.add('cn-command-palette-open');
+      this.input.value = '';
+      this.render();
+      setTimeout(() => this.input.focus(), 100);
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', this.handleEscape);
+    }
+
+    close() {
+      this.el.classList.remove('cn-command-palette-open');
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', this.handleEscape);
+    }
+
+    handleEscape = (e) => {
+      if (e.key === 'Escape') this.close();
+    };
+  }
+
+  function initCommandPalettes() {
+    $$('.cn-command-palette').forEach(el => {
+      if (!el._cnCommandPalette) new CronixCommandPalette(el);
+    });
+  }
+
+  // ========================================
+  // SEARCH
+  // ========================================
+  class CronixSearch {
+    constructor(el) {
+      this.el = el;
+      this.input = $('.cn-search-input', el);
+      this.results = $('.cn-search-results', el);
+      this.onDocClick = this.onDocClick.bind(this);
+
+      this.input.addEventListener('focus', () => this.open());
+      this.input.addEventListener('input', () => this.filter());
+      el.addEventListener('click', (e) => e.stopPropagation());
+
+      el._cnSearch = this;
+    }
+
+    setItems(items) {
+      this.items = items;
+    }
+
+    filter() {
+      const query = this.input.value.toLowerCase();
+      if (!query) {
+        this.close();
+        return;
+      }
+
+      const filtered = this.items.filter(item =>
+        item.title.toLowerCase().includes(query) ||
+        (item.subtitle && item.subtitle.toLowerCase().includes(query))
+      );
+
+      this.results.innerHTML = filtered.map(item => `
+        <div class="cn-search-result">
+          <div class="cn-search-result-title">${item.title}</div>
+          ${item.subtitle ? `<div class="cn-search-result-subtitle">${item.subtitle}</div>` : ''}
+        </div>
+      `).join('');
+
+      $$('.cn-search-result', this.results).forEach((result, i) => {
+        result.addEventListener('click', () => {
+          this.select(filtered[i]);
+        });
+      });
+
+      this.open();
+    }
+
+    select(item) {
+      this.input.value = item.title;
+      this.close();
+      this.el.dispatchEvent(new CustomEvent('select', { detail: item }));
+      if (item.action) item.action();
+    }
+
+    open() {
+      this.el.classList.add('cn-search-open');
+      document.addEventListener('click', this.onDocClick);
+    }
+
+    close() {
+      this.el.classList.remove('cn-search-open');
+      document.removeEventListener('click', this.onDocClick);
+    }
+
+    onDocClick(e) {
+      if (!this.el.contains(e.target)) {
+        this.close();
+      }
+    }
+  }
+
+  function initSearch() {
+    $$('.cn-search').forEach(el => {
+      if (!el._cnSearch) new CronixSearch(el);
+    });
+  }
+
+  // ========================================
+  // ALERT
+  // ========================================
+  class CronixAlert {
+    constructor(el) {
+      this.el = el;
+      this.closeBtn = $('.cn-alert-close', el);
+
+      if (this.closeBtn) {
+        this.closeBtn.addEventListener('click', () => this.close());
+      }
+
+      el._cnAlert = this;
+    }
+
+    close() {
+      this.el.style.opacity = '0';
+      setTimeout(() => this.el.remove(), 200);
+    }
+  }
+
+  function initAlerts() {
+    $$('.cn-alert').forEach(el => {
+      if (!el._cnAlert) new CronixAlert(el);
+    });
+  }
+
+  // ========================================
+  // TABLE SORTING
+  // ========================================
+  class CronixTable {
+    constructor(el) {
+      this.el = el;
+      this.table = $('table', el) || el;
+      this.headers = $$('th[data-sort]', this.table);
+
+      this.headers.forEach(header => {
+        header.addEventListener('click', () => this.sort(header));
+      });
+
+      el._cnTable = this;
+    }
+
+    sort(header) {
+      const key = header.dataset.sort;
+      const tbody = $('tbody', this.table);
+      const rows = $$('tr', tbody);
+      const order = header.dataset.order === 'asc' ? 'desc' : 'asc';
+
+      this.headers.forEach(h => delete h.dataset.order);
+      header.dataset.order = order;
+
+      const index = Array.from(header.parentElement.children).indexOf(header);
+
+      rows.sort((a, b) => {
+        const aVal = a.children[index].textContent.trim();
+        const bVal = b.children[index].textContent.trim();
+        const aNum = parseFloat(aVal);
+        const bNum = parseFloat(bVal);
+
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+          return order === 'asc' ? aNum - bNum : bNum - aNum;
+        }
+        return order === 'asc'
+          ? aVal.localeCompare(bVal)
+          : bVal.localeCompare(aVal);
+      });
+
+      rows.forEach(row => tbody.appendChild(row));
+    }
+  }
+
+  function initTables() {
+    $$('.cn-table-sortable').forEach(el => {
+      if (!el._cnTable) new CronixTable(el);
+    });
+  }
+
+  // ========================================
+  // PAGINATION
+  // ========================================
+  class CronixPagination {
+    constructor(el, options = {}) {
+      this.el = el;
+      this.total = options.total || 1;
+      this.current = options.current || 1;
+      this.onChange = options.onChange || (() => {});
+
+      this.render();
+      el._cnPagination = this;
+    }
+
+    render() {
+      const pages = this.getPages();
+
+      this.el.innerHTML = `
+        <button class="cn-pagination-item" data-page="prev" ${this.current === 1 ? 'disabled' : ''}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        ${pages.map(p => `
+          <button class="cn-pagination-item${p === this.current ? ' cn-pagination-active' : ''}" data-page="${p}">
+            ${p}
+          </button>
+        `).join('')}
+        <button class="cn-pagination-item" data-page="next" ${this.current === this.total ? 'disabled' : ''}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      `;
+
+      $$('.cn-pagination-item', this.el).forEach(btn => {
+        btn.addEventListener('click', () => {
+          const page = btn.dataset.page;
+          if (page === 'prev' && this.current > 1) {
+            this.goTo(this.current - 1);
+          } else if (page === 'next' && this.current < this.total) {
+            this.goTo(this.current + 1);
+          } else if (!isNaN(page)) {
+            this.goTo(parseInt(page));
+          }
+        });
+      });
+    }
+
+    getPages() {
+      const pages = [];
+      const maxVisible = 5;
+
+      if (this.total <= maxVisible) {
+        for (let i = 1; i <= this.total; i++) pages.push(i);
+      } else {
+        if (this.current <= 3) {
+          for (let i = 1; i <= 4; i++) pages.push(i);
+          pages.push('...');
+          pages.push(this.total);
+        } else if (this.current >= this.total - 2) {
+          pages.push(1);
+          pages.push('...');
+          for (let i = this.total - 3; i <= this.total; i++) pages.push(i);
+        } else {
+          pages.push(1);
+          pages.push('...');
+          for (let i = this.current - 1; i <= this.current + 1; i++) pages.push(i);
+          pages.push('...');
+          pages.push(this.total);
+        }
+      }
+
+      return pages;
+    }
+
+    goTo(page) {
+      if (page >= 1 && page <= this.total && page !== this.current) {
+        this.current = page;
+        this.render();
+        this.onChange(page);
+        this.el.dispatchEvent(new CustomEvent('change', { detail: { page } }));
+      }
+    }
+  }
+
+  // ========================================
+  // FILE INPUT
+  // ========================================
+  class CronixFileInput {
+    constructor(el) {
+      this.el = el;
+      this.input = $('input[type="file"]', el);
+      this.label = $('.cn-file-input-label', el);
+      this.textEl = $('.cn-file-input-text', el);
+      this.originalText = this.textEl ? this.textEl.innerHTML : '';
+
+      this.input.addEventListener('change', (e) => this.handleChange(e));
+
+      el._cnFileInput = this;
+    }
+
+    handleChange(e) {
+      const files = this.input.files;
+      if (files.length > 0) {
+        const names = Array.from(files).map(f => f.name).join(', ');
+        if (this.textEl) {
+          this.textEl.innerHTML = `<span>${names}</span>`;
+        }
+        this.el.classList.add('cn-file-input-has-file');
+        this.el.dispatchEvent(new CustomEvent('change', { detail: { files } }));
+      } else {
+        this.reset();
+      }
+    }
+
+    reset() {
+      this.input.value = '';
+      if (this.textEl) this.textEl.innerHTML = this.originalText;
+      this.el.classList.remove('cn-file-input-has-file');
+    }
+  }
+
+  function initFileInputs() {
+    $$('.cn-file-input').forEach(el => {
+      if (!el._cnFileInput) new CronixFileInput(el);
+    });
+  }
+
+  // ========================================
+  // INITIALIZE ALL
+  // ========================================
+  function init() {
+    initToggles();
+    initNavs();
+    initTabs();
+    initAccordions();
+    initModals();
+    initDropdowns();
+    initCommandPalettes();
+    initSearch();
+    initAlerts();
+    initTables();
+    initFileInputs();
+  }
+
+  // ========================================
+  // AUTO-INIT
+  // ========================================
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  // ========================================
+  // EXPORT
+  // ========================================
+  const CronixUI = {
+    init,
+    Toggle: CronixToggle,
+    Nav: CronixNav,
+    Tabs: CronixTabs,
+    Accordion: CronixAccordion,
+    Modal: CronixModal,
+    Dropdown: CronixDropdown,
+    Toast: new CronixToast(),
+    CommandPalette: CronixCommandPalette,
+    Search: CronixSearch,
+    Alert: CronixAlert,
+    Table: CronixTable,
+    Pagination: CronixPagination,
+    FileInput: CronixFileInput,
+    $,
+    $$,
+    createEl
+  };
+
+  // AMD
+  if (typeof define === 'function' && define.amd) {
+    define(() => CronixUI);
+  }
+  // CommonJS
+  else if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CronixUI;
+  }
+  // Browser global
+  else {
+    global.CronixUI = CronixUI;
+  }
+
+})(typeof globalThis !== 'undefined' ? globalThis : window);

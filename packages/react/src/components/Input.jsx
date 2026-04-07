@@ -7,13 +7,13 @@ const Input = forwardRef(function Input({
   className = '',
   ...props 
 }, ref) {
-  const sizeClass = size !== 'md' ? `fl-input-${size}` : '';
+  const sizeClass = size !== 'md' ? `cn-input-${size}` : '';
 
   return (
     <input 
       ref={ref}
       type={type}
-      className={`fl-input ${sizeClass} ${error ? 'fl-input-error' : ''} ${className}`}
+      className={`cn-input ${sizeClass} ${error ? 'cn-input-error' : ''} ${className}`}
       {...props}
     />
   );

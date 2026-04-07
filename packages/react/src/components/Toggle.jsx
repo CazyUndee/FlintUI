@@ -20,15 +20,15 @@ export default function Toggle({
     }
   };
 
-  const sizeClass = size === 'sm' ? 'fl-toggle-sm' : size === 'lg' ? 'fl-toggle-lg' : '';
+  const sizeClass = size === 'sm' ? 'cn-toggle-sm' : size === 'lg' ? 'cn-toggle-lg' : '';
 
   return (
     <div
-      className={`fl-toggle ${isOn ? 'on' : ''} ${sizeClass} ${disabled ? 'disabled' : ''} ${className}`}
+      className={`cn-toggle ${isOn ? 'on' : ''} ${sizeClass} ${disabled ? 'disabled' : ''} ${className}`}
       onClick={handleToggle}
       {...props}
     >
-      <div className="fl-toggle-box"></div>
+      <div className="cn-toggle-box"></div>
     </div>
   );
 }

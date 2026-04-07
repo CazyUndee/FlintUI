@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+<OutputType>WinExe</OutputType>
+<TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+<RootNamespace>CronixUI.Test</RootNamespace>
+<UseWinUI>true</UseWinUI>
+<Nullable>enable</Nullable>
+<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+<Platforms>x64</Platforms>
+</PropertyGroup>
+
+<ItemGroup>
+<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250114005" />
+<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1741" />
+</ItemGroup>
+
+<ItemGroup>
+<ProjectReference Include="..\\CronixUI.WinUI\\CronixUI.WinUI.csproj" />
+</ItemGroup>
+</Project>

@@ -1,0 +1,70 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CronixUI.Controls">
+
+    <Style TargetType="local:CnComboBox">
+        <Setter Property="FontFamily" Value="{StaticResource CnFontFamily}"/>
+        <Setter Property="FontSize" Value="{StaticResource CnTextBase}"/>
+        <Setter Property="Foreground" Value="{StaticResource CnTextBrush}"/>
+        <Setter Property="Background" Value="{StaticResource CnSurfaceBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource CnBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource CnRadius}"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:CnComboBox">
+                    <Grid>
+                        <Border x:Name="Background"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <ContentPresenter x:Name="ContentPresenter"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"/>
+                                <FontIcon x:Name="DropDownGlyph"
+                                          Glyph="&#xE70D;"
+                                          FontSize="12"
+                                          HorizontalAlignment="Right"
+                                          Foreground="{StaticResource CnTextMutedBrush}"/>
+                            </Grid>
+                        </Border>
+                        <Popup x:Name="Popup">
+                            <Border x:Name="PopupBorder"
+                                    Background="{StaticResource CnSurfaceBrush}"
+                                    BorderBrush="{StaticResource CnBorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="{StaticResource CnRadius}">
+                                <ScrollViewer MaxHeight="300">
+                                    <ItemsPresenter x:Name="ItemsPresenter"/>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ComboBoxItem" x:Key="CnComboBoxItem">
+        <Setter Property="FontFamily" Value="{StaticResource CnFontFamily}"/>
+        <Setter Property="FontSize" Value="{StaticResource CnTextBase}"/>
+        <Setter Property="Foreground" Value="{StaticResource CnTextBrush}"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border x:Name="LayoutRoot"
+                            Background="Transparent"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 function ToastContainer() {
-  return <div className="fl-toast-container" />;
+  return <div className="cn-toast-container" />;
 }
 
 function ToastItem({ toast, onRemove }) {
@@ -20,16 +20,16 @@ function ToastItem({ toast, onRemove }) {
   };
 
   return (
-    <div className={`fl-toast fl-toast-${toast.type}`}>
-      <div className="fl-alert-icon">
+    <div className={`cn-toast cn-toast-${toast.type}`}>
+      <div className="cn-alert-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" dangerouslySetInnerHTML={{ __html: icons[toast.type] }} />
       </div>
-      <div className="fl-alert-content">
-        {toast.title && <div className="fl-alert-title">{toast.title}</div>}
-        {toast.message && <div className="fl-alert-message">{toast.message}</div>}
+      <div className="cn-alert-content">
+        {toast.title && <div className="cn-alert-title">{toast.title}</div>}
+        {toast.message && <div className="cn-alert-message">{toast.message}</div>}
       </div>
       {toast.closable && (
-        <button className="fl-alert-close" onClick={() => onRemove(toast.id)}>
+        <button className="cn-alert-close" onClick={() => onRemove(toast.id)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -42,7 +42,7 @@ function ToastItem({ toast, onRemove }) {
 
 export default function Toast({ toasts = [], onRemove }) {
   return (
-    <div className="fl-toast-container">
+    <div className="cn-toast-container">
       {toasts.map((toast) => (
         <ToastItem key={toast.id} toast={toast} onRemove={onRemove} />
       ))}

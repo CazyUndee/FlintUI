@@ -1,0 +1,4 @@
+demo/
+scripts/
+*.log
+.DS_Store

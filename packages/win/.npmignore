@@ -1,0 +1,19 @@
+# Build outputs
+bin/
+obj/
+.vs/
+*.exe
+*.dll
+*.pdb
+*.appx
+*.msix
+
+# VS files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+.DS_Store

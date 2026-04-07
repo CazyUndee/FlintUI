@@ -1,0 +1,31 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CronixUI.Controls">
+
+    <Style TargetType="local:CnTooltip">
+        <Setter Property="FontFamily" Value="{StaticResource CnFontFamily}"/>
+        <Setter Property="FontSize" Value="{StaticResource CnTextXs}"/>
+        <Setter Property="Foreground" Value="{StaticResource CnTextBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:CnTooltip">
+                    <Grid>
+                        <ContentPresenter x:Name="ContentPresenter"/>
+                        <Popup x:Name="TooltipPopup"
+                               VerticalOffset="-40">
+                            <Border Background="{StaticResource CnSurface3Brush}"
+                                    BorderBrush="{StaticResource CnBorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="{StaticResource CnRadiusSm}"
+                                    Padding="8,4">
+                                <ContentPresenter Content="{TemplateBinding TooltipContent}"/>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

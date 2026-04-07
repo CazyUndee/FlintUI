@@ -28,11 +28,11 @@ export default function Dropdown({
   }, [isOpen]);
 
   return (
-    <div ref={dropdownRef} className={`fl-dropdown ${isOpen ? 'fl-dropdown-open' : ''} ${className}`}>
-      <div className="fl-dropdown-trigger" onClick={toggle}>
+    <div ref={dropdownRef} className={`cn-dropdown ${isOpen ? 'cn-dropdown-open' : ''} ${className}`}>
+      <div className="cn-dropdown-trigger" onClick={toggle}>
         {trigger}
       </div>
-      <div className="fl-dropdown-menu" onClick={close}>
+      <div className="cn-dropdown-menu" onClick={close}>
         {children}
       </div>
     </div>
@@ -41,7 +41,7 @@ export default function Dropdown({
 
 export function DropdownItem({ children, onClick, className = '', ...props }) {
   return (
-    <div className={`fl-dropdown-item ${className}`} onClick={onClick} {...props}>
+    <div className={`cn-dropdown-item ${className}`} onClick={onClick} {...props}>
       {children}
     </div>
   );

@@ -1,7 +1,7 @@
 {
-  "name": "flintui-react",
+  "name": "cronixui-react",
   "version": "1.0.0",
-  "description": "FlintUI for React",
+  "description": "CronixUI React Components",
   "keywords": [
     "react",
     "ui",
@@ -22,7 +22,7 @@
     "react-dom": ">=17"
   },
   "dependencies": {
-    "flintui-web": "*"
+    "cronixui": "*"
   },
   "scripts": {
     "build": "echo 'TODO: add build script'"

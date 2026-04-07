@@ -1,0 +1,163 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Colors -->
+    <Color x:Key="CnBackgroundColor">#0a0a0a</Color>
+    <Color x:Key="CnSurfaceColor">#111111</Color>
+    <Color x:Key="CnSurface2Color">#1a1a1a</Color>
+    <Color x:Key="CnSurface3Color">#222222</Color>
+    <Color x:Key="CnSurface4Color">#2a2a2a</Color>
+    
+    <Color x:Key="CnAccentColor">#6b2323</Color>
+    <Color x:Key="CnAccentHoverColor">#7d2a2a</Color>
+    <Color x:Key="CnAccentLightColor">#8a3535</Color>
+    <Color x:Key="CnAccentTextColor">#c97a7a</Color>
+    
+    <Color x:Key="CnTextColor">#f0ede8</Color>
+    <Color x:Key="CnTextMutedColor">#80f0ede8</Color>
+    <Color x:Key="CnTextDimColor">#40f0ede8</Color>
+    
+    <Color x:Key="CnSuccessColor">#1e5028</Color>
+    <Color x:Key="CnSuccessTextColor">#6bc47a</Color>
+    <Color x:Key="CnWarningColor">#503c14</Color>
+    <Color x:Key="CnWarningTextColor">#c4a43a</Color>
+    <Color x:Key="CnErrorColor">#501414</Color>
+    <Color x:Key="CnErrorTextColor">#c46b6b</Color>
+    <Color x:Key="CnInfoColor">#143550</Color>
+    <Color x:Key="CnInfoTextColor">#6ba8c4</Color>
+
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="CnBackgroundBrush" Color="{StaticResource CnBackgroundColor}"/>
+    <SolidColorBrush x:Key="CnSurfaceBrush" Color="{StaticResource CnSurfaceColor}"/>
+    <SolidColorBrush x:Key="CnSurface2Brush" Color="{StaticResource CnSurface2Color}"/>
+    <SolidColorBrush x:Key="CnSurface3Brush" Color="{StaticResource CnSurface3Color}"/>
+    <SolidColorBrush x:Key="CnSurface4Brush" Color="{StaticResource CnSurface4Color}"/>
+    
+    <SolidColorBrush x:Key="CnAccentBrush" Color="{StaticResource CnAccentColor}"/>
+    <SolidColorBrush x:Key="CnAccentHoverBrush" Color="{StaticResource CnAccentHoverColor}"/>
+    <SolidColorBrush x:Key="CnAccentLightBrush" Color="{StaticResource CnAccentLightColor}"/>
+    <SolidColorBrush x:Key="CnAccentTextBrush" Color="{StaticResource CnAccentTextColor}"/>
+    
+    <SolidColorBrush x:Key="CnTextBrush" Color="{StaticResource CnTextColor}"/>
+    <SolidColorBrush x:Key="CnTextMutedBrush" Color="{StaticResource CnTextMutedColor}"/>
+    <SolidColorBrush x:Key="CnTextDimBrush" Color="{StaticResource CnTextDimColor}"/>
+    
+    <SolidColorBrush x:Key="CnBorderBrush" Color="#15FFFFFF"/>
+    <SolidColorBrush x:Key="CnBorderHoverBrush" Color="#25FFFFFF"/>
+    <SolidColorBrush x:Key="CnBorderFocusBrush" Color="#40FFFFFF"/>
+    
+    <SolidColorBrush x:Key="CnSuccessBrush" Color="{StaticResource CnSuccessColor}"/>
+    <SolidColorBrush x:Key="CnSuccessTextBrush" Color="{StaticResource CnSuccessTextColor}"/>
+    <SolidColorBrush x:Key="CnWarningBrush" Color="{StaticResource CnWarningColor}"/>
+    <SolidColorBrush x:Key="CnWarningTextBrush" Color="{StaticResource CnWarningTextColor}"/>
+    <SolidColorBrush x:Key="CnErrorBrush" Color="{StaticResource CnErrorColor}"/>
+    <SolidColorBrush x:Key="CnErrorTextBrush" Color="{StaticResource CnErrorTextColor}"/>
+    <SolidColorBrush x:Key="CnInfoBrush" Color="{StaticResource CnInfoColor}"/>
+    <SolidColorBrush x:Key="CnInfoTextBrush" Color="{StaticResource CnInfoTextColor}"/>
+
+    <!-- Typography -->
+    <FontFamily x:Key="CnFontFamily">Segoe UI</FontFamily>
+    <FontFamily x:Key="CnFontMonoFamily">Consolas</FontFamily>
+    
+    <x:Double x:Key="CnTextXs">11</x:Double>
+    <x:Double x:Key="CnTextSm">12</x:Double>
+    <x:Double x:Key="CnTextBase">13</x:Double>
+    <x:Double x:Key="CnTextMd">14</x:Double>
+    <x:Double x:Key="CnTextLg">16</x:Double>
+    <x:Double x:Key="CnTextXl">20</x:Double>
+    <x:Double x:Key="CnText2xl">28</x:Double>
+    <x:Double x:Key="CnText3xl">36</x:Double>
+
+    <!-- Spacing -->
+    <x:Double x:Key="CnSpace1">4</x:Double>
+    <x:Double x:Key="CnSpace2">8</x:Double>
+    <x:Double x:Key="CnSpace3">12</x:Double>
+    <x:Double x:Key="CnSpace4">16</x:Double>
+    <x:Double x:Key="CnSpace5">20</x:Double>
+    <x:Double x:Key="CnSpace6">24</x:Double>
+    <x:Double x:Key="CnSpace8">32</x:Double>
+    <x:Double x:Key="CnSpace10">40</x:Double>
+    <x:Double x:Key="CnSpace12">48</x:Double>
+
+    <!-- Border Radius -->
+    <CornerRadius x:Key="CnRadiusSm">6</CornerRadius>
+    <CornerRadius x:Key="CnRadius">10</CornerRadius>
+    <CornerRadius x:Key="CnRadiusLg">14</CornerRadius>
+    <CornerRadius x:Key="CnRadiusXl">20</CornerRadius>
+
+    <!-- Button Styles -->
+    <Style x:Key="CnButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource CnFontFamily}"/>
+        <Setter Property="FontSize" Value="{StaticResource CnTextBase}"/>
+        <Setter Property="Foreground" Value="{StaticResource CnTextBrush}"/>
+        <Setter Property="Background" Value="{StaticResource CnSurface2Brush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource CnBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="8,6"/>
+        <Setter Property="CornerRadius" Value="{StaticResource CnRadius}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="CnButtonPrimary" TargetType="Button" BasedOn="{StaticResource CnButton}">
+        <Setter Property="Background" Value="{StaticResource CnAccentBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource CnAccentBrush}"/>
+    </Style>
+
+    <Style x:Key="CnButtonGhost" TargetType="Button" BasedOn="{StaticResource CnButton}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+
+    <Style x:Key="CnButtonDanger" TargetType="Button" BasedOn="{StaticResource CnButton}">
+        <Setter Property="Background" Value="{StaticResource CnErrorBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource CnErrorBrush}"/>
+    </Style>
+
+    <!-- TextBox Styles -->
+    <Style x:Key="CnTextBox" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{StaticResource CnFontFamily}"/>
+        <Setter Property="FontSize" Value="{StaticResource CnTextBase}"/>
+        <Setter Property="Foreground" Value="{StaticResource CnTextBrush}"/>
+        <Setter Property="Background" Value="{StaticResource CnSurfaceBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource CnBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="CornerRadius" Value="{StaticResource CnRadius}"/>
+    </Style>
+
+    <!-- Card Style -->
+    <Style x:Key="CnCard" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource CnSurfaceBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource CnBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource CnRadiusLg}"/>
+        <Setter Property="Padding" Value="20"/>
+    </Style>
+
+    <!-- ToggleButton Style -->
+    <Style x:Key="CnToggle" TargetType="ToggleButton">
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="22"/>
+        <Setter Property="Background" Value="{StaticResource CnSurface3Brush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource CnBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="11"/>
+    </Style>
+
+    <!-- ProgressBar Style -->
+    <Style x:Key="CnProgressBar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="4"/>
+        <Setter Property="Background" Value="{StaticResource CnSurface3Brush}"/>
+        <Setter Property="Foreground" Value="{StaticResource CnAccentBrush}"/>
+        <Setter Property="CornerRadius" Value="2"/>
+    </Style>
+
+    <!-- Slider Style -->
+    <Style x:Key="CnSlider" TargetType="Slider">
+        <Setter Property="Background" Value="{StaticResource CnSurface3Brush}"/>
+        <Setter Property="Foreground" Value="{StaticResource CnAccentBrush}"/>
+    </Style>
+
+</ResourceDictionary>
