@@ -47,6 +47,7 @@ export const Accordion: React.FC<AccordionProps> & {
                   onClick={() => toggleItem(idx)}
                   role="button"
                   tabIndex={0}
+                  aria-expanded={openItems.has(idx)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();

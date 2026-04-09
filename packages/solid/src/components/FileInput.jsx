@@ -4,66 +4,73 @@ export function FileInput(props) {
   const merged = mergeProps({
     accept: '',
     multiple: false,
-    disabled: false,
-    onChange: () => {}
+    label: 'Drag and drop files here, or click to browse',
+    onFileSelect: () => {},
+    class: ''
   }, props);
 
-  const [dragOver, setDragOver] = createSignal(false);
-  let inputRef;
+  const [fileName, setFileName] = createSignal('');
+  const [isDragging, setIsDragging] = createSignal(false);
 
-  const handleFileSelect = (files) => {
-    const fileList = Array.from(files);
-    if (!merged.multiple && fileList.length > 0) {
-      merged.onChange(fileList[0]);
-    } else {
-      merged.onChange(fileList);
+  const processFiles = (files) => {
+    if (files.length > 0) {
+      setFileName(files.map(f => f.name).join(', '));
+      merged.onFileSelect(merged.multiple ? files : files[0]);
     }
   };
 
   const handleChange = (e) => {
-    handleFileSelect(e.target.files);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setDragOver(false);
-    handleFileSelect(e.dataTransfer.files);
+    const files = Array.from(e.target.files || []);
+    processFiles(files);
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    setDragOver(true);
+    e.stopPropagation();
+    setIsDragging(true);
   };
 
-  const handleDragLeave = () => {
-    setDragOver(false);
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    const files = Array.from(e.dataTransfer.files);
+    processFiles(files);
   };
 
   return (
-    <div
-      class={`cn-file-input ${dragOver() ? 'cn-file-input-dragover' : ''} ${merged.disabled ? 'cn-file-input-disabled' : ''}`}
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-    >
-      <input
-        ref={inputRef}
-        type="file"
-        class="cn-file-input-native"
-        accept={merged.accept}
-        multiple={merged.multiple}
-        disabled={merged.disabled}
-        onChange={handleChange}
-      />
-      <div class="cn-file-input-content">
-        <span class="cn-file-input-icon">📁</span>
-        <span class="cn-file-input-text">
-          Drop files here or <span class="cn-file-input-browse">browse</span>
-        </span>
-        <Show when={merged.accept}>
-          <span class="cn-file-input-hint">Accepted: {merged.accept}</span>
-        </Show>
-      </div>
+    <div class={`cn-file-input ${fileName() ? 'cn-file-input-has-file' : ''} ${isDragging() ? 'cn-file-input-dragging' : ''} ${merged.class}`.trim()}>
+      <label
+        class="cn-file-input-label"
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <input
+          type="file"
+          accept={merged.accept}
+          multiple={merged.multiple}
+          onChange={handleChange}
+        />
+        <div class="cn-file-input-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+        </div>
+        <div class="cn-file-input-text">
+          {fileName() ? <span>{fileName()}</span> : merged.label}
+        </div>
+      </label>
     </div>
   );
 }
+
+export default FileInput;

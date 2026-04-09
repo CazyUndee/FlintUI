@@ -12,7 +12,7 @@ export interface ListItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const List: React.FC<ListProps> = ({ children, className = '', ...props }) => {
   return (
-    <div className={`cn-list ${className}`.trim()} {...props}>
+    <div className={`cn-list ${className}`.trim()} role="list" {...props}>
       {children}
     </div>
   );
@@ -35,7 +35,7 @@ export const ListItem: React.FC<ListItemProps> = ({
     <div
       className={`cn-list-item ${clickable ? 'cn-list-item-clickable' : ''} ${className}`.trim()}
       onClick={onClick}
-      role={clickable ? 'button' : undefined}
+      role={clickable ? 'button' : 'listitem'}
       tabIndex={clickable ? 0 : undefined}
       {...props}
     >

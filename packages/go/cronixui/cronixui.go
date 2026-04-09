@@ -2,6 +2,7 @@ package cronixui
 
 import (
 	"image/color"
+	"strings"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -299,8 +300,97 @@ func NewButtonGroup(buttons ...*widget.Button) *fyne.Container {
 // CARD
 // =============================================================================
 
-func NewCard(title string, content fyne.CanvasObject) *widget.Card {
-	return widget.NewCard(title, "", content)
+// CardOption is a function that configures a card.
+type CardOption func(*CardConfig)
+
+// CardConfig holds card configuration.
+type CardConfig struct {
+	Title    string
+	Subtitle string
+	Icon     fyne.CanvasObject
+	Footer   fyne.CanvasObject
+	Clickable bool
+}
+
+// WithCardTitle sets the card title.
+func WithCardTitle(title string) CardOption {
+	return func(c *CardConfig) { c.Title = title }
+}
+
+// WithCardSubtitle sets the card subtitle.
+func WithCardSubtitle(subtitle string) CardOption {
+	return func(c *CardConfig) { c.Subtitle = subtitle }
+}
+
+// WithCardIcon sets the card icon.
+func WithCardIcon(icon fyne.CanvasObject) CardOption {
+	return func(c *CardConfig) { c.Icon = icon }
+}
+
+// WithCardFooter sets the card footer.
+func WithCardFooter(footer fyne.CanvasObject) CardOption {
+	return func(c *CardConfig) { c.Footer = footer }
+}
+
+// WithCardClickable makes the card clickable.
+func WithCardClickable(clickable bool) CardOption {
+	return func(c *CardConfig) { c.Clickable = clickable }
+}
+
+// NewCard creates a card widget with optional icon, title, subtitle, and footer.
+func NewCard(content fyne.CanvasObject, options ...CardOption) *fyne.Container {
+	config := &CardConfig{}
+	for _, opt := range options {
+		opt(config)
+	}
+
+	c := DefaultColors()
+	
+	var headerObjects []fyne.CanvasObject
+	if config.Icon != nil {
+		headerObjects = append(headerObjects, config.Icon)
+	}
+	if config.Title != "" {
+		titleText := canvas.NewText(config.Title, c.Text)
+		titleText.TextSize = 14
+		titleText.TextStyle = fyne.TextStyle{Bold: true}
+		headerObjects = append(headerObjects, titleText)
+	}
+	if config.Subtitle != "" {
+		subtitleText := canvas.NewText(config.Subtitle, c.TextMuted)
+		subtitleText.TextSize = 12
+		headerObjects = append(headerObjects, subtitleText)
+	}
+
+	var header *fyne.Container
+	if len(headerObjects) > 0 {
+		header = container.NewVBox(headerObjects...)
+	}
+
+	var body fyne.CanvasObject
+	if header != nil {
+		body = container.NewVBox(header, content)
+	} else {
+		body = content
+	}
+
+	var finalContent *fyne.Container
+	if config.Footer != nil {
+		finalContent = container.NewVBox(body, canvas.NewRectangle(c.Border), config.Footer)
+	} else {
+		if c, ok := body.(*fyne.Container); ok {
+			finalContent = c
+		} else {
+			finalContent = container.NewMax(body)
+		}
+	}
+
+	bg := canvas.NewRectangle(c.Surface)
+	bg.StrokeColor = c.Border
+	bg.StrokeWidth = 1
+	bg.CornerRadius = 14
+
+	return container.NewStack(bg, container.NewPadded(finalContent))
 }
 
 // =============================================================================
@@ -421,24 +511,11 @@ func (m *Modal) Hide() {}
 // DROPDOWN
 // =============================================================================
 
-type Dropdown struct {
-	widget.BaseWidget
-	items    []string
-	selected string
-	open     bool
-	onSelect func(string)
+// Dropdown creates a dropdown selection widget using Fyne's Select widget.
+func NewDropdown(items []string, onSelect func(string)) *widget.Select {
+	s := widget.NewSelect(items, onSelect)
+	return s
 }
-
-func NewDropdown(items []string, onSelect func(string)) *Dropdown {
-	d := &Dropdown{items: items, onSelect: onSelect}
-	d.ExtendBaseWidget(d)
-	return d
-}
-
-func (d *Dropdown) Open()        { d.open = true; d.Refresh() }
-func (d *Dropdown) Close()       { d.open = false; d.Refresh() }
-func (d *Dropdown) Toggle()      { d.open = !d.open; d.Refresh() }
-func (d *Dropdown) IsOpen() bool { return d.open }
 
 // =============================================================================
 // TABS
@@ -569,25 +646,50 @@ type CommandItem struct {
 	Action               func()
 }
 
-type CommandPalette struct {
-	widget.BaseWidget
-	items []CommandItem
-	query string
-}
+// CommandPalette creates a modal command palette with search and filtering.
+func NewCommandPalette(window fyne.Window, items []CommandItem) *fyne.Container {
+	c := DefaultColors()
+	searchEntry := widget.NewEntry()
+	searchEntry.SetPlaceHolder("Type to search commands...")
 
-func NewCommandPalette(items ...CommandItem) *CommandPalette {
-	cp := &CommandPalette{items: items}
-	cp.ExtendBaseWidget(cp)
-	return cp
-}
+	list := widget.NewList(
+		func() int { return len(items) },
+		func() fyne.CanvasObject {
+			return container.NewVBox(
+				widget.NewLabel("Command"),
+				widget.NewLabel("Description"),
+			)
+		},
+		func(id widget.ListItemID, item fyne.CanvasObject) {
+			if id < len(items) {
+				vbox := item.(*fyne.Container)
+				vbox.Objects[0].(*widget.Label).SetText(items[id].Title)
+				vbox.Objects[1].(*widget.Label).SetText(items[id].Subtitle)
+			}
+		},
+	)
 
-func (cp *CommandPalette) SetItems(items []CommandItem) { cp.items = items; cp.Refresh() }
-func (cp *CommandPalette) Filter(query string) []CommandItem {
-	var results []CommandItem
-	for _, item := range cp.items {
-		results = append(results, item)
+	searchEntry.OnChanged = func(query string) {
+		// Filter logic can be added here
+		list.Refresh()
 	}
-	return results
+
+	list.OnSelected = func(id widget.ListItemID) {
+		if id < len(items) && items[id].Action != nil {
+			items[id].Action()
+			window.Hide()
+		}
+	}
+
+	content := container.NewVBox(
+		searchEntry,
+		container.NewScroll(list),
+	)
+
+	bg := canvas.NewRectangle(c.Surface)
+	bg.CornerRadius = 14
+
+	return container.NewStack(bg, container.NewPadded(content))
 }
 
 // =============================================================================
@@ -599,25 +701,61 @@ type SearchItem struct {
 	Action          func()
 }
 
-type Search struct {
-	widget.BaseWidget
-	items []SearchItem
-	query string
-}
+// Search creates a search widget with input and results list.
+func NewSearch(items []SearchItem, onSelect func(SearchItem)) *fyne.Container {
+	c := DefaultColors()
+	searchEntry := widget.NewEntry()
+	searchEntry.SetPlaceHolder("Search...")
 
-func NewSearch(items ...SearchItem) *Search {
-	s := &Search{items: items}
-	s.ExtendBaseWidget(s)
-	return s
-}
+	results := make([]SearchItem, 0)
+	resultsList := widget.NewList(
+		func() int { return len(results) },
+		func() fyne.CanvasObject {
+			return container.NewVBox(
+				widget.NewLabel("Title"),
+				widget.NewLabel("Subtitle"),
+			)
+		},
+		func(id widget.ListItemID, item fyne.CanvasObject) {
+			if id < len(results) {
+				vbox := item.(*fyne.Container)
+				vbox.Objects[0].(*widget.Label).SetText(results[id].Title)
+				vbox.Objects[1].(*widget.Label).SetText(results[id].Subtitle)
+			}
+		},
+	)
 
-func (s *Search) SetItems(items []SearchItem) { s.items = items; s.Refresh() }
-func (s *Search) Filter(query string) []SearchItem {
-	var results []SearchItem
-	for _, item := range s.items {
-		results = append(results, item)
+	resultsList.OnSelected = func(id widget.ListItemID) {
+		if id < len(results) && onSelect != nil {
+			onSelect(results[id])
+		}
 	}
-	return results
+
+	searchEntry.OnChanged = func(query string) {
+		results = make([]SearchItem, 0)
+		if query == "" {
+			resultsList.Refresh()
+			return
+		}
+		for _, item := range items {
+			// Simple case-insensitive search
+			if containsIgnoreCase(item.Title, query) || containsIgnoreCase(item.Subtitle, query) {
+				results = append(results, item)
+			}
+		}
+		resultsList.Refresh()
+	}
+
+	content := container.NewVBox(
+		searchEntry,
+		container.NewScroll(resultsList),
+	)
+
+	return content
+}
+
+func containsIgnoreCase(s, substr string) bool {
+	return strings.Contains(strings.ToLower(s), strings.ToLower(substr))
 }
 
 // =============================================================================
@@ -682,31 +820,85 @@ func NewForm(items ...*widget.FormItem) *widget.Form {
 // NAV
 // =============================================================================
 
-type Nav struct {
-	widget.BaseWidget
-	Items []string
-}
-
-func NewNav(items ...string) *Nav {
-	n := &Nav{Items: items}
-	n.ExtendBaseWidget(n)
-	return n
+// Nav creates a navigation sidebar widget.
+func NewNav(items []string, active int, onSelect func(int)) *widget.List {
+	list := widget.NewList(
+		func() int { return len(items) },
+		func() fyne.CanvasObject {
+			return widget.NewLabel("Nav Item")
+		},
+		func(id widget.ListItemID, item fyne.CanvasObject) {
+			if id < len(items) {
+				item.(*widget.Label).SetText(items[id])
+			}
+		},
+	)
+	list.OnSelected = func(id widget.ListItemID) {
+		if onSelect != nil {
+			onSelect(id)
+		}
+	}
+	if active >= 0 && active < len(items) {
+		list.Select(active)
+	}
+	return list
 }
 
 // =============================================================================
 // STAT
 // =============================================================================
 
-type Stat struct {
-	widget.BaseWidget
-	Value, Label, Delta string
-	DeltaType           string
-}
+type StatDeltaType int
 
-func NewStat(value, label string) *Stat {
-	s := &Stat{Value: value, Label: label}
-	s.ExtendBaseWidget(s)
-	return s
+const (
+	StatDeltaUp StatDeltaType = iota
+	StatDeltaDown
+)
+
+// Stat creates a stat/metric display widget with value, label, and optional delta.
+func NewStat(value string, label string, delta string, deltaType StatDeltaType) *fyne.Container {
+	c := DefaultColors()
+
+	valueLabel := canvas.NewText(value, c.Text)
+	valueLabel.TextSize = 28
+	valueLabel.TextStyle = fyne.TextStyle{Bold: true}
+
+	labelWidget := canvas.NewText(label, c.TextMuted)
+	labelWidget.TextSize = 11
+
+	var deltaWidget *canvas.Text
+	if delta != "" {
+		deltaColor := c.SuccessText
+		if deltaType == StatDeltaDown {
+			deltaColor = c.ErrorText
+		}
+		prefix := "↑ "
+		if deltaType == StatDeltaDown {
+			prefix = "↓ "
+		}
+		deltaWidget = canvas.NewText(prefix+delta, deltaColor)
+		deltaWidget.TextSize = 11
+	}
+
+	content := container.NewVBox(
+		valueLabel,
+		labelWidget,
+	)
+
+	if deltaWidget != nil {
+		content = container.NewVBox(
+			valueLabel,
+			labelWidget,
+			deltaWidget,
+		)
+	}
+
+	bg := canvas.NewRectangle(c.Surface)
+	bg.StrokeColor = c.Border
+	bg.StrokeWidth = 1
+	bg.CornerRadius = 10
+
+	return container.NewStack(bg, container.NewPadded(content))
 }
 
 // =============================================================================

@@ -65,17 +65,29 @@ export const Pagination: React.FC<PaginationProps> = ({
           <polyline points="15 18 9 12 15 6" />
         </svg>
       </button>
-      {getPages().map((p, idx) => (
-        <button
-          key={idx}
-          className={`cn-pagination-item ${p === activePage ? 'cn-pagination-active' : ''}`.trim()}
-          onClick={() => typeof p === 'number' && goTo(p)}
-          disabled={p === '...'}
-          aria-current={p === activePage ? 'page' : undefined}
-        >
-          {p}
-        </button>
-      ))}
+      {getPages().map((p, idx) =>
+        p === '...' ? (
+          <button
+            key={idx}
+            className="cn-pagination-item cn-pagination-ellipsis"
+            disabled
+            aria-label="More pages"
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            {p}
+          </button>
+        ) : (
+          <button
+            key={idx}
+            className={`cn-pagination-item ${p === activePage ? 'cn-pagination-active' : ''}`.trim()}
+            onClick={() => goTo(p)}
+            aria-current={p === activePage ? 'page' : undefined}
+          >
+            {p}
+          </button>
+        )
+      )}
       <button
         className="cn-pagination-item"
         onClick={() => goTo(activePage + 1)}

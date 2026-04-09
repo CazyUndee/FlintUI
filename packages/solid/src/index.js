@@ -33,4 +33,7 @@ export { Footer } from './components/Footer.jsx';
 export { Stat } from './components/Stat.jsx';
 export { Tag } from './components/Tag.jsx';
 export { Textarea } from './components/Textarea.jsx';
+export { FormGroup } from './components/FormGroup.jsx';
+export { Stack, HStack, Divider } from './components/Stack.jsx';
+export { H1, H2, H3, H4, H5, H6, Text, Label } from './components/Typography.jsx';
 export * from './tokens/index.js';

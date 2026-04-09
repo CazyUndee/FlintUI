@@ -30,6 +30,11 @@
       sortDirection = 'asc';
     }
   }
+
+  function getAriaSort(index) {
+    if (!sortable || sortColumn !== index) return undefined;
+    return sortDirection === 'asc' ? 'ascending' : 'descending';
+  }
 </script>
 
 <style>
@@ -98,9 +103,10 @@
     <thead>
       <tr>
         {#each headers as header, index}
-          <th 
-            class={sortable ? 'sortable' : ''} 
+          <th
+            class={sortable ? 'sortable' : ''}
             on:click={() => handleSort(index)}
+            aria-sort={getAriaSort(index)}
           >
             {header}
             {#if sortable && sortColumn === index}

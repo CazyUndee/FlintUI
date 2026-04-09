@@ -28,7 +28,13 @@ function toggle(index) {
 <div class="cn-accordion">
   {#each items as item, index}
     <div class="cn-accordion-item" class:cn-accordion-open={isOpen(index)}>
-      <div class="cn-accordion-header" on:click={() => toggle(index)}>
+      <div
+        class="cn-accordion-header"
+        on:click={() => toggle(index)}
+        role="button"
+        tabindex="0"
+        aria-expanded={isOpen(index)}
+      >
         <span class="cn-accordion-title">{item.title}</span>
         <span class="cn-accordion-icon">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

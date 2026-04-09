@@ -8,8 +8,8 @@ import { components } from '../../data/spec';
     <h1>Components</h1>
     <p class="lede">Each component is defined once in the spec and rendered across frameworks.</p>
     <div class="component-grid">
-      {components.map((component) => (
-        <a class="component-card" href={`/components/${component.name.toLowerCase()}`}>
+      {components.map((component: typeof components[number]) => (
+        <a class="component-card" href={`${component.name.toLowerCase()}.html`}>
           <strong>{component.name}</strong>
           <span>{component.category}</span>
         </a>

@@ -4,8 +4,9 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
   trigger: React.ReactNode;
 }
 
-export interface DropdownItemProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface DropdownItemProps extends React.HTMLAttributes<HTMLDivElement | HTMLButtonElement> {
   icon?: React.ReactNode;
+  divider?: boolean;
 }
 
 export const Dropdown: React.FC<DropdownProps> & {
@@ -41,22 +42,42 @@ export const Dropdown: React.FC<DropdownProps> & {
         className={`cn-dropdown ${isOpen ? 'cn-dropdown-open' : ''} ${className}`.trim()}
         {...props}
       >
-        <div className="cn-dropdown-trigger" onClick={toggle}>
+        <div
+          className="cn-dropdown-trigger"
+          onClick={toggle}
+          role="button"
+          aria-haspopup="true"
+          aria-expanded={isOpen}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggle();
+            }
+          }}
+        >
           {trigger}
         </div>
-        <div className="cn-dropdown-menu" onClick={close}>
+        <div className="cn-dropdown-menu" role="menu" onClick={close}>
           {children}
         </div>
       </div>
     );
   },
   {
-    Item: ({ children, onClick, className = '', ...props }: DropdownItemProps) => (
-      <div className={`cn-dropdown-item ${className}`.trim()} onClick={onClick} {...props}>
+    Item: ({ children, icon, onClick, className = '', ...props }: DropdownItemProps) => (
+      <div
+        className={`cn-dropdown-item ${className}`.trim()}
+        onClick={onClick}
+        role="menuitem"
+        tabIndex={0}
+        {...props}
+      >
+        {icon && <span className="cn-dropdown-item-icon">{icon}</span>}
         {children}
       </div>
     ),
-    Divider: () => <div className="cn-dropdown-divider" />,
+    Divider: () => <div className="cn-dropdown-divider" role="separator" />,
   }
 );
 

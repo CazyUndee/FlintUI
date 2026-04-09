@@ -95,7 +95,7 @@
 				</div>
 			{:else}
 				<div class="cn-command-empty">
-					No results found
+					No commands found
 				</div>
 			{/each}
 		</div>

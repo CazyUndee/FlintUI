@@ -52,7 +52,7 @@ export const Search: React.FC<SearchProps> = ({
         <line x1="21" y1="21" x2="16.65" y2="16.65" />
       </svg>
       <input
-        type="text"
+        type="search"
         className="cn-input cn-search-input"
         placeholder={placeholder}
         value={query}
@@ -65,21 +65,25 @@ export const Search: React.FC<SearchProps> = ({
         aria-autocomplete="list"
         aria-expanded={isOpen}
       />
-      {isOpen && filtered.length > 0 && (
+      {isOpen && (
         <div className="cn-search-results" role="listbox">
-          {filtered.map((item, idx) => (
-            <div
-              key={idx}
-              className="cn-search-result"
-              onClick={() => handleSelect(item)}
-              role="option"
-            >
-              <div className="cn-search-result-title">{item.title}</div>
-              {item.subtitle && (
-                <div className="cn-search-result-subtitle">{item.subtitle}</div>
-              )}
-            </div>
-          ))}
+          {filtered.length > 0 ? (
+            filtered.map((item, idx) => (
+              <div
+                key={idx}
+                className="cn-search-result"
+                onClick={() => handleSelect(item)}
+                role="option"
+              >
+                <div className="cn-search-result-title">{item.title}</div>
+                {item.subtitle && (
+                  <div className="cn-search-result-subtitle">{item.subtitle}</div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="cn-search-empty">No results found</div>
+          )}
         </div>
       )}
     </div>

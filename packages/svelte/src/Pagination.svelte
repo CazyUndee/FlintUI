@@ -55,7 +55,7 @@ function generatePages(totalPages, currentPage) {
 
 	{#each pages as page}
 		{#if page === '...'}
-			<span class="cn-pagination-item cn-pagination-ellipsis">...</span>
+			<span class="cn-pagination-item cn-pagination-ellipsis" aria-label="More pages" aria-hidden="true">...</span>
 		{:else}
 			<button
 				type="button"

@@ -30,11 +30,12 @@ export function Accordion(props) {
   return (
     <div class="cn-accordion">
       <For each={merged.items}>{(item, index) => (
-        <div class={`cn-accordion-item ${isOpen(index()) ? 'cn-accordion-item-open' : ''}`}>
+        <div class={`cn-accordion-item ${isOpen(index()) ? 'cn-accordion-open' : ''}`}>
           <button
             type="button"
             class="cn-accordion-header"
             onClick={() => toggleItem(index())}
+            aria-expanded={isOpen(index())}
           >
             <span class="cn-accordion-title">{item.title}</span>
             <span class="cn-accordion-icon">{isOpen(index()) ? '−' : '+'}</span>
@@ -47,3 +48,5 @@ export function Accordion(props) {
     </div>
   );
 }
+
+export default Accordion;

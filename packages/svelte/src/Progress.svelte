@@ -4,18 +4,27 @@
   export let variant = 'default';
   export let size = 'md';
   export let showLabel = false;
+  export let label = '';
 
   $: percentage = Math.min(100, Math.max(0, (value / max) * 100));
+  $: displayLabel = label || `${Math.round(percentage)}%`;
 </script>
 
 <div class="cn-progress cn-progress-{size}" class:cn-progress-success={variant === 'success'} class:cn-progress-warning={variant === 'warning'} class:cn-progress-error={variant === 'error'}>
   {#if showLabel}
     <div class="cn-progress-label">
-      <span>{value}</span>
-      <span>{max}</span>
+      <span>
+        <slot name="label">{displayLabel}</slot>
+      </span>
     </div>
   {/if}
-  <div class="cn-progress-track">
+  <div
+    class="cn-progress-track"
+    role="progressbar"
+    aria-valuenow={Math.round(percentage)}
+    aria-valuemin={0}
+    aria-valuemax={100}
+  >
     <div class="cn-progress-bar" style="width: {percentage}%"></div>
   </div>
 </div>

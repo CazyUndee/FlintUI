@@ -5,7 +5,8 @@ export function CommandPalette(props) {
     open: false,
     items: [],
     onSelect: () => {},
-    onClose: () => {}
+    onClose: () => {},
+    placeholder: 'Search commands...'
   }, props);
 
   const [query, setQuery] = createSignal('');
@@ -33,7 +34,7 @@ export function CommandPalette(props) {
           handleSelect(filteredItems()[selectedIndex()]);
         }
       };
-      
+
       window.addEventListener('keydown', handleKeyDown);
       onCleanup(() => window.removeEventListener('keydown', handleKeyDown));
     }
@@ -42,13 +43,13 @@ export function CommandPalette(props) {
   const filteredItems = () => {
     const q = query().toLowerCase();
     if (!q) return merged.items;
-    return merged.items.filter(item => 
-      item.label.toLowerCase().includes(q)
+    return merged.items.filter(item =>
+      (item.label || item.title || '').toLowerCase().includes(q)
     );
   };
 
   const handleSelect = (item) => {
-    merged.onSelect(item.value);
+    merged.onSelect(item.value !== undefined ? item.value : item);
     merged.onClose();
   };
 
@@ -59,7 +60,7 @@ export function CommandPalette(props) {
           <input
             type="text"
             class="cn-command-palette-input"
-            placeholder="Type a command or search..."
+            placeholder={merged.placeholder}
             value={query()}
             onInput={(e) => {
               setQuery(e.target.value);
@@ -68,23 +69,29 @@ export function CommandPalette(props) {
             autofocus
           />
           <div class="cn-command-palette-list">
-            <For each={filteredItems()}>{(item, index) => (
-              <div
-                class={`cn-command-palette-item ${index() === selectedIndex() ? 'cn-command-palette-item-selected' : ''}`}
-                onClick={() => handleSelect(item)}
-              >
-                <Show when={item.icon}>
-                  <span class="cn-command-palette-item-icon">{item.icon}</span>
-                </Show>
-                <span class="cn-command-palette-item-label">{item.label}</span>
-                <Show when={item.shortcut}>
-                  <span class="cn-command-palette-item-shortcut">{item.shortcut}</span>
-                </Show>
-              </div>
-            )}</For>
+            {filteredItems().length > 0 ? (
+              <For each={filteredItems()}>{(item, index) => (
+                <div
+                  class={`cn-command-palette-item ${index() === selectedIndex() ? 'cn-command-palette-item-selected' : ''}`}
+                  onClick={() => handleSelect(item)}
+                >
+                  <Show when={item.icon}>
+                    <span class="cn-command-palette-item-icon">{item.icon}</span>
+                  </Show>
+                  <span class="cn-command-palette-item-label">{item.label || item.title}</span>
+                  <Show when={item.shortcut}>
+                    <span class="cn-command-palette-item-shortcut">{item.shortcut}</span>
+                  </Show>
+                </div>
+              )}</For>
+            ) : (
+              <div class="cn-command-empty">No commands found</div>
+            )}
           </div>
         </div>
       </div>
     </Show>
   );
 }
+
+export default CommandPalette;

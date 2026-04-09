@@ -1,4 +1,4 @@
-import { mergeProps, createSignal, For } from 'solid-js';
+import { mergeProps, createSignal, For, Show } from 'solid-js';
 
 export function Table(props) {
   const merged = mergeProps({
@@ -12,7 +12,7 @@ export function Table(props) {
 
   const handleSort = (index) => {
     if (!merged.sortable) return;
-    
+
     if (sortColumn() === index) {
       setSortDirection(sortDirection() === 'asc' ? 'desc' : 'asc');
     } else {
@@ -21,13 +21,18 @@ export function Table(props) {
     }
   };
 
+  const getAriaSort = (index) => {
+    if (!merged.sortable || sortColumn() !== index) return undefined;
+    return sortDirection() === 'asc' ? 'ascending' : 'descending';
+  };
+
   const sortedRows = () => {
     if (!merged.sortable || sortColumn() === null) return merged.rows;
-    
+
     return [...merged.rows].sort((a, b) => {
       const aVal = a[sortColumn()];
       const bVal = b[sortColumn()];
-      
+
       if (aVal < bVal) return sortDirection() === 'asc' ? -1 : 1;
       if (aVal > bVal) return sortDirection() === 'asc' ? 1 : -1;
       return 0;
@@ -35,7 +40,7 @@ export function Table(props) {
   };
 
   return (
-    <div class="cn-table-wrapper">
+    <div class={`cn-table-wrapper ${merged.sortable ? 'cn-table-sortable' : ''}`.trim()}>
       <table class="cn-table">
         <thead>
           <tr>
@@ -43,6 +48,7 @@ export function Table(props) {
               <th
                 class={`cn-table-header ${merged.sortable ? 'cn-table-header-sortable' : ''}`}
                 onClick={() => handleSort(index())}
+                aria-sort={getAriaSort(index())}
               >
                 {header}
                 <Show when={merged.sortable && sortColumn() === index()}>
@@ -65,3 +71,5 @@ export function Table(props) {
     </div>
   );
 }
+
+export default Table;

@@ -6,7 +6,8 @@ export function Progress(props) {
     max: 100,
     variant: 'default',
     size: 'md',
-    showLabel: false
+    showLabel: false,
+    label: ''
   }, props);
 
   const percentage = () => {
@@ -20,16 +21,28 @@ export function Progress(props) {
   };
 
   return (
-    <div class={`cn-progress ${sizeClasses[merged.size] || 'cn-progress-md'}`}>
-      <div class="cn-progress-track">
-        <div
-          class={`cn-progress-bar cn-progress-${merged.variant}`}
-          style={`width: ${percentage()}%`}
-        />
-      </div>
+    <div>
       <Show when={merged.showLabel}>
-        <span class="cn-progress-label">{Math.round(percentage())}%</span>
+        <div class="cn-progress-label">
+          <span>{merged.label || `${Math.round(percentage())}%`}</span>
+        </div>
       </Show>
+      <div
+        class={`cn-progress ${sizeClasses[merged.size] || 'cn-progress-md'} ${merged.variant !== 'default' ? `cn-progress-${merged.variant}` : ''}`.trim()}
+        role="progressbar"
+        aria-valuenow={Math.round(percentage())}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <div class="cn-progress-track">
+          <div
+            class={`cn-progress-bar cn-progress-${merged.variant}`}
+            style={`width: ${percentage()}%`}
+          />
+        </div>
+      </div>
     </div>
   );
 }
+
+export default Progress;

@@ -50,9 +50,9 @@
   }
 </style>
 
-<div class="cn-list">
+<div class="cn-list" role="list">
   {#each items as item}
-    <div class="cn-list-item" class:cn-list-item-clickable={clickable}>
+    <div class="cn-list-item" class:cn-list-item-clickable={clickable} role="listitem">
       {#if item.icon}
         <div class="cn-list-item-icon">
           <svelte:component this={item.icon} />

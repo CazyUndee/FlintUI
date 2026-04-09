@@ -8,6 +8,7 @@ export interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
 export interface SidebarItemProps extends React.HTMLAttributes<HTMLAnchorElement | HTMLDivElement> {
   active?: boolean;
   icon?: React.ReactNode;
+  href?: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> & {
@@ -23,16 +24,37 @@ export const Sidebar: React.FC<SidebarProps> & {
     );
   },
   {
-    Item: ({ children, active = false, icon, className = '', ...props }: SidebarItemProps) => (
-      <div
-        className={`cn-sidebar-item ${active ? 'cn-sidebar-active' : ''} ${className}`.trim()}
-        role="menuitem"
-        {...(props as React.HTMLAttributes<HTMLDivElement>)}
-      >
-        {icon && <span className="cn-sidebar-item-icon">{icon}</span>}
-        {children}
-      </div>
-    ),
+    Item: ({ children, active = false, icon, href, className = '', ...props }: SidebarItemProps) => {
+      const content = (
+        <>
+          {icon && <span className="cn-sidebar-item-icon">{icon}</span>}
+          {children}
+        </>
+      );
+
+      if (href) {
+        return (
+          <a
+            href={href}
+            className={`cn-sidebar-item ${active ? 'cn-sidebar-active' : ''} ${className}`.trim()}
+            role="menuitem"
+            {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+          >
+            {content}
+          </a>
+        );
+      }
+
+      return (
+        <div
+          className={`cn-sidebar-item ${active ? 'cn-sidebar-active' : ''} ${className}`.trim()}
+          role="menuitem"
+          {...(props as React.HTMLAttributes<HTMLDivElement>)}
+        >
+          {content}
+        </div>
+      );
+    },
   }
 );
 

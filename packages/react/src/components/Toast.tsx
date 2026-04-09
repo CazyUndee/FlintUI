@@ -30,12 +30,19 @@ export interface UseToastReturn {
 }
 
 const ToastItem: React.FC<{ toast: ToastOptions; onRemove: (id: number) => void }> = ({ toast, onRemove }) => {
+  const [isLeaving, setIsLeaving] = React.useState(false);
+
   React.useEffect(() => {
     if (toast.duration && toast.duration > 0) {
-      const timer = setTimeout(() => onRemove(toast.id!), toast.duration);
+      const timer = setTimeout(() => handleRemove(toast.id!), toast.duration);
       return () => clearTimeout(timer);
     }
-  }, [toast.id, toast.duration, onRemove]);
+  }, [toast.id, toast.duration]);
+
+  const handleRemove = (id: number) => {
+    setIsLeaving(true);
+    setTimeout(() => onRemove(id), 200);
+  };
 
   const icons: Record<ToastType, React.ReactNode> = {
     success: <polyline points="20 6 9 17 4 12" />,
@@ -63,7 +70,7 @@ const ToastItem: React.FC<{ toast: ToastOptions; onRemove: (id: number) => void 
   };
 
   return (
-    <div className={`cn-toast cn-toast-${toast.type}`} role="alert">
+    <div className={`cn-toast cn-toast-${toast.type} ${isLeaving ? 'cn-toast-leaving' : ''}`.trim()} role="alert">
       <div className="cn-alert-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           {icons[toast.type || 'info']}
@@ -74,7 +81,7 @@ const ToastItem: React.FC<{ toast: ToastOptions; onRemove: (id: number) => void 
         {toast.message && <div className="cn-alert-message">{toast.message}</div>}
       </div>
       {toast.closable && (
-        <button className="cn-alert-close" onClick={() => onRemove(toast.id!)} aria-label="Close">
+        <button className="cn-alert-close" onClick={() => handleRemove(toast.id!)} aria-label="Close">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />

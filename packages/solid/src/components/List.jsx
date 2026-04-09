@@ -1,30 +1,45 @@
 import { mergeProps, For, Show } from 'solid-js';
 
-export function List(props) {
-  const merged = mergeProps({
-    items: [],
-    clickable: false
-  }, props);
-
+export function ListItem(props) {
+  const merged = mergeProps({ clickable: false, class: '' }, props);
   return (
-    <ul class={`cn-list ${merged.clickable ? 'cn-list-clickable' : ''}`}>
-      <For each={merged.items}>{(item) => {
-        const isObject = typeof item === 'object' && item !== null;
-        const content = isObject ? item.content || item.label : item;
-        const onClick = isObject ? item.onClick : undefined;
-        
-        return (
-          <li
-            class={`cn-list-item ${onClick || merged.clickable ? 'cn-list-item-clickable' : ''}`}
-            onClick={onClick}
-          >
-            <Show when={isObject && item.icon}>
-              <span class="cn-list-icon">{item.icon}</span>
-            </Show>
-            <span class="cn-list-content">{content}</span>
-          </li>
-        );
-      }}</For>
-    </ul>
+    <div
+      class={`cn-list-item ${merged.clickable ? 'cn-list-item-clickable' : ''} ${merged.class}`.trim()}
+      onClick={merged.onClick}
+      role={merged.clickable ? 'button' : 'listitem'}
+      tabIndex={merged.clickable ? 0 : undefined}
+      {...merged}
+    >
+      <Show when={merged.icon}>
+        <div class="cn-list-item-icon">{merged.icon}</div>
+      </Show>
+      <Show when={merged.title || merged.subtitle || merged.children}>
+        <div class="cn-list-item-content">
+          <Show when={merged.title}>
+            <div class="cn-list-item-title">{merged.title}</div>
+          </Show>
+          <Show when={merged.subtitle}>
+            <div class="cn-list-item-subtitle">{merged.subtitle}</div>
+          </Show>
+          {merged.children}
+        </div>
+      </Show>
+      <Show when={merged.actions}>
+        <div class="cn-list-item-actions">{merged.actions}</div>
+      </Show>
+    </div>
   );
 }
+
+export function List(props) {
+  const merged = mergeProps({ class: '' }, props);
+  return (
+    <div class={`cn-list ${merged.class}`.trim()} role="list" {...merged}>
+      {merged.children}
+    </div>
+  );
+}
+
+List.Item = ListItem;
+
+export default List;

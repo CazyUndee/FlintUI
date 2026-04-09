@@ -1,5 +1,10 @@
 ---
+import '../styles/global.css';
 const { title = 'CronixUI', description = 'CronixUI docs' } = Astro.props;
+const parts = Astro.url.pathname.split('/').filter(Boolean);
+const isHtmlFile = parts.at(-1)?.endsWith('.html');
+const depth = Math.max(0, parts.length - (isHtmlFile ? 1 : 0));
+const prefix = depth === 0 ? './' : '../'.repeat(depth);
 ---
 
 <!doctype html>
@@ -9,16 +14,15 @@ const { title = 'CronixUI', description = 'CronixUI docs' } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{title}</title>
-    <link rel="stylesheet" href="/global.css" />
   </head>
   <body>
     <div class="shell">
       <header class="topbar">
-        <a class="brand" href="/">CronixUI</a>
+        <a class="brand" href={`${prefix}index.html`}>CronixUI</a>
         <nav class="nav">
-          <a href="/components">Components</a>
-          <a href="/tokens">Tokens</a>
-          <a href="/developers">Developers</a>
+          <a href={`${prefix}components.html`}>Components</a>
+          <a href={`${prefix}tokens.html`}>Tokens</a>
+          <a href={`${prefix}developers.html`}>Developers</a>
         </nav>
       </header>
       <main class="content">

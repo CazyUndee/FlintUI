@@ -8,6 +8,7 @@ export let duration = 3000;
 const dispatch = createEventDispatcher();
 
 let visible = true;
+let isLeaving = false;
 let timeoutId;
 
 const icons = {
@@ -25,8 +26,11 @@ const iconColors = {
 };
 
 function close() {
-	visible = false;
-	dispatch('close');
+	isLeaving = true;
+	setTimeout(() => {
+		visible = false;
+		dispatch('close');
+	}, 200);
 }
 
 onMount(() => {
@@ -43,7 +47,7 @@ onDestroy(() => {
 </script>
 
 {#if visible}
-<div class="cn-toast">
+<div class="cn-toast" class:cn-toast-leaving={isLeaving} role="alert">
 	<div class="cn-toast-icon" style="color: {iconColors[type]}">
 		{@html icons[type]}
 	</div>
@@ -72,6 +76,10 @@ onDestroy(() => {
 	font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+.cn-toast-leaving {
+	animation: cn-toast-out 0.2s ease forwards;
+}
+
 @keyframes cn-toast-in {
 	from {
 		opacity: 0;
@@ -80,6 +88,17 @@ onDestroy(() => {
 	to {
 		opacity: 1;
 		transform: translateX(0);
+	}
+}
+
+@keyframes cn-toast-out {
+	from {
+		opacity: 1;
+		transform: translateX(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateX(100%);
 	}
 }
 

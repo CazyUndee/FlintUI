@@ -12,8 +12,8 @@ import { components } from '../data/spec';
       and a consistent dark visual language.
     </p>
     <div class="actions">
-      <a class="button primary" href="/components">Browse components</a>
-      <a class="button" href="/tokens">View tokens</a>
+      <a class="button primary" href="components.html">Browse components</a>
+      <a class="button" href="tokens.html">View tokens</a>
     </div>
   </section>
 
@@ -26,8 +26,8 @@ import { components } from '../data/spec';
   <section class="panel">
     <h2>Component coverage</h2>
     <div class="component-grid">
-      {components.map((component) => (
-        <a class="component-card" href={`/components/${component.name.toLowerCase()}`}>
+      {components.map((component: typeof components[number]) => (
+        <a class="component-card" href={`components/${component.name.toLowerCase()}.html`}>
           <strong>{component.name}</strong>
           <span>{component.category}</span>
         </a>

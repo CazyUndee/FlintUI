@@ -62,20 +62,22 @@
 			type="button"
 			class="cn-dropdown-trigger"
 			on:click={toggle}
+			aria-haspopup="true"
+			aria-expanded={isOpen}
 		>
 			{selected || 'Select...'}
 		</button>
 	</slot>
 
-	<div class="cn-dropdown-menu">
+	<div class="cn-dropdown-menu" role="menu">
 		{#each items as item, i}
 			{#if item && item.divider}
-				<div class="cn-dropdown-divider"></div>
+				<div class="cn-dropdown-divider" role="separator"></div>
 			{:else}
 				<div
 					class="cn-dropdown-item"
-					class:cn-dropdown-item-active={typeof item === 'object' 
-						? item.label === selected 
+					class:cn-dropdown-item-active={typeof item === 'object'
+						? item.label === selected
 						: item === selected}
 					on:click={() => handleSelect(item)}
 					on:keydown={() => {}}

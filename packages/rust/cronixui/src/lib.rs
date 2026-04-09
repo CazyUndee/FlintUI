@@ -21,12 +21,10 @@
 pub mod colors;
 pub mod tokens;
 pub mod components;
-pub mod widgets;
 
 pub use colors::*;
 pub use tokens::*;
 pub use components::*;
-pub use widgets::*;
 
 use egui::{Color32, Vec2, Rounding};
 

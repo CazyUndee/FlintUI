@@ -22,8 +22,28 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
   className = '',
   ...props
 }: TableProps<T>): React.ReactElement {
+  const [sortState, setSortState] = React.useState<Record<string, 'none' | 'ascending' | 'descending'>>(
+    Object.fromEntries(columns.map((col) => [col.key, 'none']))
+  );
+
   const handleSort = (column: TableColumn<T>) => {
     if (!sortable || !column.sortable) return;
+
+    const next: Record<string, 'none' | 'ascending' | 'descending'> = {};
+    columns.forEach((col) => {
+      next[col.key] = 'none';
+    });
+
+    const current = sortState[column.key] ?? 'none';
+    if (current === 'none') {
+      next[column.key] = 'ascending';
+    } else if (current === 'ascending') {
+      next[column.key] = 'descending';
+    } else {
+      next[column.key] = 'none';
+    }
+
+    setSortState(next);
     onSort?.(column.key);
   };
 
@@ -32,16 +52,21 @@ export function Table<T extends Record<string, unknown> = Record<string, unknown
       <table className="cn-table">
         <thead>
           <tr>
-            {columns.map((col, idx) => (
-              <th
-                key={idx}
-                onClick={() => handleSort(col)}
-                data-sort={col.key}
-              >
-                {col.header}
-                {col.sortable && ' ↕'}
-              </th>
-            ))}
+            {columns.map((col, idx) => {
+              const sortDirection = sortState[col.key] ?? 'none';
+              const sortIndicator = sortDirection === 'ascending' ? ' ↑' : sortDirection === 'descending' ? ' ↓' : col.sortable ? ' ↕' : '';
+              return (
+                <th
+                  key={idx}
+                  onClick={() => handleSort(col)}
+                  data-sort={col.key}
+                  aria-sort={col.sortable ? sortDirection : undefined}
+                >
+                  {col.header}
+                  {sortIndicator}
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody>

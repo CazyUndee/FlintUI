@@ -19,29 +19,30 @@ export function Pagination(props) {
     const pages = [];
     const total = totalPages();
     const current = merged.current;
-    
+
     let start = Math.max(1, current - 2);
     let end = Math.min(total, current + 2);
-    
+
     if (start > 1) pages.push(1);
     if (start > 2) pages.push('...');
-    
+
     for (let i = start; i <= end; i++) {
       pages.push(i);
     }
-    
+
     if (end < total - 1) pages.push('...');
     if (end < total) pages.push(total);
-    
+
     return pages;
   };
 
   return (
-    <nav class="cn-pagination">
+    <nav class="cn-pagination" aria-label="Pagination">
       <button
         class="cn-pagination-btn cn-pagination-prev"
         disabled={merged.current === 1}
         onClick={() => handlePageClick(merged.current - 1)}
+        aria-label="Previous page"
       >
         ←
       </button>
@@ -50,20 +51,32 @@ export function Pagination(props) {
           <button
             class={`cn-pagination-btn ${page === merged.current ? 'cn-pagination-active' : ''}`}
             onClick={() => handlePageClick(page)}
+            aria-current={page === merged.current ? 'page' : undefined}
           >
             {page}
           </button>
         }>
-          <span class="cn-pagination-ellipsis">...</span>
+          <button
+            class="cn-pagination-btn cn-pagination-ellipsis"
+            disabled
+            aria-label="More pages"
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            ...
+          </button>
         </Show>
       )}</For>
       <button
         class="cn-pagination-btn cn-pagination-next"
         disabled={merged.current === totalPages()}
         onClick={() => handlePageClick(merged.current + 1)}
+        aria-label="Next page"
       >
         →
       </button>
     </nav>
   );
 }
+
+export default Pagination;

@@ -66,7 +66,7 @@ function selectItem(item) {
   </svg>
 
   <input
-    type="text"
+    type="search"
     class="cn-search-input"
     {placeholder}
     bind:value={query}
@@ -94,6 +94,8 @@ function selectItem(item) {
         </div>
       {/each}
     </div>
+  {:else if open && query.length > 0}
+    <div class="cn-search-empty">No results found</div>
   {/if}
 </div>
 
@@ -178,5 +180,13 @@ function selectItem(item) {
   font-size: 12px;
   color: rgba(240, 237, 232, 0.5);
   margin-top: 2px;
+}
+
+.cn-search-empty {
+  padding: 24px;
+  text-align: center;
+  color: rgba(240, 237, 232, 0.4);
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
 }
 </style>

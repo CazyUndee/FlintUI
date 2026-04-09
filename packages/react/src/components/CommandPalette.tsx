@@ -97,25 +97,29 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           aria-expanded={filtered.length > 0}
         />
         <div className="cn-command-palette-results" role="listbox">
-          {filtered.map((item, idx) => (
-            <div
-              key={idx}
-              className={`cn-command-item ${idx === activeIndex ? 'cn-command-item-active' : ''}`.trim()}
-              onClick={() => handleSelect(item)}
-              onMouseEnter={() => setActiveIndex(idx)}
-              role="option"
-              aria-selected={idx === activeIndex}
-            >
-              {item.icon && <div className="cn-command-item-icon">{item.icon}</div>}
-              <div className="cn-command-item-content">
-                <div className="cn-command-item-title">{item.title}</div>
-                {item.subtitle && (
-                  <div className="cn-command-item-subtitle">{item.subtitle}</div>
-                )}
+          {filtered.length > 0 ? (
+            filtered.map((item, idx) => (
+              <div
+                key={idx}
+                className={`cn-command-item ${idx === activeIndex ? 'cn-command-item-active' : ''}`.trim()}
+                onClick={() => handleSelect(item)}
+                onMouseEnter={() => setActiveIndex(idx)}
+                role="option"
+                aria-selected={idx === activeIndex}
+              >
+                {item.icon && <div className="cn-command-item-icon">{item.icon}</div>}
+                <div className="cn-command-item-content">
+                  <div className="cn-command-item-title">{item.title}</div>
+                  {item.subtitle && (
+                    <div className="cn-command-item-subtitle">{item.subtitle}</div>
+                  )}
+                </div>
+                {item.kbd && <div className="cn-command-item-kbd">{item.kbd}</div>}
               </div>
-              {item.kbd && <div className="cn-command-item-kbd">{item.kbd}</div>}
-            </div>
-          ))}
+            ))
+          ) : (
+            <div className="cn-command-empty">No commands found</div>
+          )}
         </div>
       </div>
     </div>
