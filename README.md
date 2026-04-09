@@ -2,6 +2,8 @@
 
 A multi-platform, multi-language UI toolkit with a dark theme, crimson accents, and Outfit typography.
 
+> If you find this useful, consider starring this repo!
+
 ## Installation
 
 ### JavaScript/TypeScript
