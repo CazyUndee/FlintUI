@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: cronixui
-Version: 1.1.2
+Version: 1.1.3
 Summary: CronixUI - A dark-themed UI toolkit with crimson accents and Outfit typography
 Author: CazyUndee
 License: GPL-3.0
@@ -34,6 +34,8 @@ Dynamic: license-file
 # CronixUI
 
 A multi-platform, multi-language UI toolkit with a dark theme, crimson accents, and Outfit typography.
+
+> If you find this useful, consider starring this repo!
 
 ## Installation
 

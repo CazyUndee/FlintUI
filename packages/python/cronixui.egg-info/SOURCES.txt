@@ -34,7 +34,11 @@ packages/python/cronixui/toast.py
 packages/python/cronixui/toggle.py
 packages/python/cronixui/tokens.py
 packages/python/cronixui/tooltip.py
+packages/python/cronixui.egg-info/PKG-INFO
 packages/python/cronixui.egg-info/SOURCES.txt
+packages/python/cronixui.egg-info/dependency_links.txt
+packages/python/cronixui.egg-info/requires.txt
+packages/python/cronixui.egg-info/top_level.txt
 tests/__init__.py
 tests/conftest.py
 tests/test_badge.py
