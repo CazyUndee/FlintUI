@@ -4,6 +4,12 @@ A multi-platform, multi-language UI toolkit with a dark theme, crimson accents, 
 
 > If you find this useful, consider starring this repo!
 
+## Notices:
+- Python installation should be fixed now, if not, start an issue and paste the logs
+- working on a proper cli installation for flutter 
+- it is still really early, so there might be issues
+- start an issue if you encounter any of them
+
 ## Installation
 
 ### JavaScript/TypeScript
