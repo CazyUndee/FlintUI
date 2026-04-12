@@ -8,6 +8,12 @@ Semantic versioning: `MAJOR.MINOR.PATCH`
 - **MINOR**: Backward-compatible features
 - **PATCH**: Backward-compatible fixes
 
+## Branching Model
+
+- `main`: Stable branch, only updated through reviewed pull requests.
+- `develop`: Default working branch for local work and agent-authored changes.
+- Flow: push work to `develop` -> open PR `develop` -> `main` -> manual verify/merge.
+
 ## Publishing Protocol
 
 ### Before Publishing

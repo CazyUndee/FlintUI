@@ -16,6 +16,12 @@ If you are an agent or LLM, read `FOR_AGENTS/AGENTS.md` first.
 
 Agent-oriented project guidance now lives in `FOR_AGENTS/AGENTS.md`.
 
+## Branch Strategy
+
+- `main` is stable/production-ready.
+- `develop` is the active development branch for day-to-day work (including agent-driven changes).
+- Open pull requests from `develop` to `main`, then manually review and merge.
+
 ## Installation
 
 ### JavaScript/TypeScript
