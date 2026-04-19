@@ -10,7 +10,7 @@ A multi-platform, multi-language UI toolkit with a dark theme, crimson accents, 
 - it is still really early, so there might be issues
 - start an issue if you encounter any of them
 
-## ⚠️ IMPORTANT FOR ALL LLMS AND AGENTS ⚠️
+## IMPORTANT FOR ALL LLMS AND AGENTS
 
 **ALL LLMs AND AGENTS MUST READ `FOR_AGENTS/AGENTS.md` BEFORE PROCEEDING WITH ANY TASK.**
 
@@ -19,10 +19,6 @@ This is **mandatory**. The `FOR_AGENTS/AGENTS.md` file contains critical instruc
 **DO NOT SKIP THIS STEP.**
 
 If you are an agent or LLM, your first action must be to read and understand `FOR_AGENTS/AGENTS.md`.
-
-## For Agents
-
-Agent-oriented project guidance lives in `FOR_AGENTS/AGENTS.md`.
 
 ## Branch Strategy
 
