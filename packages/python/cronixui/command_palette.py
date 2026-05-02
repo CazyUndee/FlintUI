@@ -1,7 +1,7 @@
 """Command palette component."""
 
 from dataclasses import dataclass
-from typing import Callable, List, Optional
+from typing import Callable, Optional, Union
 
 
 @dataclass
@@ -16,10 +16,10 @@ class CommandPaletteItem:
 class CommandPalette:
     """Command palette component."""
 
-    def __init__(self, element=None):
+    def __init__(self, element: Union[str, None] = None) -> None:
         """Initialize command palette on element."""
         self._element = element
-        self._items: List[CommandPaletteItem] = []
+        self._items: list[CommandPaletteItem] = []
         self._open: bool = False
 
     def open(self) -> None:
@@ -38,16 +38,16 @@ class CommandPalette:
         """Check if command palette is open."""
         return self._open
 
-    def set_items(self, items: List[CommandPaletteItem]) -> None:
+    def set_items(self, items: list[CommandPaletteItem]) -> None:
         """Set command items."""
         self._items = items
 
-    def get_items(self) -> List[CommandPaletteItem]:
+    def get_items(self) -> list[CommandPaletteItem]:
         """Get all items."""
         return self._items
 
     def execute(self, index: int) -> None:
         """Execute item by index."""
-        if 0 <= index < len(self._items) and self._items[index].action:
-            self._items[index].action()
+        if 0 <= index < len(self._items) and self._items[index].action is not None:
+            self._items[index].action()  # type: ignore
             self.close()

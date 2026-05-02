@@ -675,4 +675,6 @@ class FileInput:
 class HasRenderHtml:
     """Protocol-like base for type hints: any object with render_html()."""
 
-    def render_html(self) -> str: ...
+    def render_html(self) -> str:
+        """Render as HTML string."""
+        return ""

@@ -1,7 +1,7 @@
 """Search component."""
 
 from dataclasses import dataclass
-from typing import Callable, List, Optional
+from typing import Callable, Optional, Union
 
 
 @dataclass
@@ -16,17 +16,17 @@ class SearchItem:
 class Search:
     """Search component."""
 
-    def __init__(self, element=None):
+    def __init__(self, element: Union[str, None] = None) -> None:
         """Initialize search on element."""
         self._element = element
-        self._items: List[SearchItem] = []
+        self._items: list[SearchItem] = []
         self._open: bool = False
 
-    def set_items(self, items: List[SearchItem]) -> None:
+    def set_items(self, items: list[SearchItem]) -> None:
         """Set searchable items."""
         self._items = items
 
-    def filter(self, query: str) -> List[SearchItem]:
+    def filter(self, query: str) -> list[SearchItem]:
         """Filter items by query."""
         query_lower = query.lower()
         return [item for item in self._items if query_lower in item.title.lower()]
@@ -45,6 +45,6 @@ class Search:
 
     def select(self, index: int) -> None:
         """Select and execute item by index."""
-        if 0 <= index < len(self._items) and self._items[index].action:
-            self._items[index].action()
+        if 0 <= index < len(self._items) and self._items[index].action is not None:
+            self._items[index].action()  # type: ignore
             self.close()

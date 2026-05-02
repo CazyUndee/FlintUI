@@ -1,6 +1,6 @@
 """Pagination component."""
 
-from typing import Callable, Optional
+from typing import Callable, Optional, Union
 
 
 class Pagination:
@@ -8,11 +8,11 @@ class Pagination:
 
     def __init__(
         self,
-        element=None,
+        element: Union[str, None] = None,
         total: int = 1,
         current: int = 1,
         on_change: Optional[Callable[[int], None]] = None,
-    ):
+    ) -> None:
         """Initialize pagination.
 
         Args:

@@ -1,12 +1,14 @@
 """Navigation component."""
 
+from typing import Union
+
 
 class Nav:
     """Navigation component."""
 
-    _instances = []
+    _instances: list["Nav"] = []
 
-    def __init__(self, element=None):
+    def __init__(self, element: Union[str, None] = None) -> None:
         """Initialize navigation on element."""
         self._element = element
         self._active: str = ""
