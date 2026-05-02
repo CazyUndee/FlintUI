@@ -1,0 +1,119 @@
+Metadata-Version: 2.4
+Name: cronixui
+Version: 1.1.3
+Summary: CronixUI - A dark-themed UI toolkit with crimson accents and Outfit typography
+Author: CazyUndee
+License-Expression: GPL-3.0-only
+Project-URL: Repository, https://github.com/CazyUndee/CronixUI
+Keywords: ui,dark-mode,design-system,components
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: User Interfaces
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21; extra == "dev"
+Requires-Dist: black>=23.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: mypy>=1.0; extra == "dev"
+Requires-Dist: build>=0.10; extra == "dev"
+Requires-Dist: twine>=4.0; extra == "dev"
+
+# CronixUI Python Package
+
+A dark-themed UI toolkit with crimson accents and Outfit typography. Part of the CronixUI multi-platform design system.
+
+## Installation
+
+```bash
+pip install cronixui
+```
+
+## Quick Start
+
+```python
+from cronixui import Button, Card, Toast, Badge
+from cronixui.tokens import BG, ACCENT, TEXT
+
+# Create a button
+btn = Button("Click me", variant="primary")
+print(btn.render_html())
+# <button class="cn-btn cn-btn-primary">Click me</button>
+
+# Create a card
+card = Card(title="My Card", body="Card content")
+print(card.render_html())
+# <div class="cn-card">...</div>
+
+# Show a toast
+toast = Toast.success("Operation completed!")
+print(toast.message)  # Operation completed!
+
+# Use a badge
+badge = Badge("New", variant="success")
+print(badge.render_html())
+# <span class="cn-badge cn-badge-success">New</span>
+```
+
+## Available Components
+
+All components generate HTML strings and work without a browser:
+
+- **Button** - Buttons with variants (primary, ghost, outline, danger, success)
+- **Card** - Card containers with header, body, footer
+- **Badge** - Status badges with semantic colors
+- **Avatar** - User avatars with initials
+- **Toast** - Toast notification data
+- **Alert** - Alert messages with variants
+- **Progress** - Progress bars
+- **Table** - Data tables
+- **List** - Lists with icons and actions
+- **Form** - Form inputs (Input, Textarea, Select, Checkbox, Radio, etc.)
+- **Layout** - Layout components (Header, Sidebar, Footer, Container)
+- **Tabs** - Tab navigation
+- **Accordion** - Collapsible sections
+- **Modal** - Modal dialogs
+- **Dropdown** - Dropdown menus
+- **Nav** - Navigation bars
+- **Pagination** - Pagination controls
+- **CommandPalette** - Command palette data
+- **Search** - Search component data
+
+## Design Tokens
+
+```python
+from cronixui.tokens import BG, ACCENT, TEXT, typography, spacing
+
+print(BG.hex)      # #0a0a0a
+print(ACCENT.rgb)  # (107, 35, 35)
+print(typography.lg)  # 16
+print(spacing.space_4)  # 16
+```
+
+## Other Platforms
+
+CronixUI is also available for:
+
+| Platform | Install |
+|----------|---------|
+| JavaScript/TypeScript | `npm install cronixui` |
+| React | `npm install cronixui` |
+| Vue | `npm install cronixui` |
+| Svelte | `npm install cronixui` |
+| Solid | `npm install cronixui` |
+| Go | `go get github.com/CazyUndee/CronixUI/packages/go/cronixui` |
+| Rust | `cronixui = "1.1.2"` |
+| Flutter | GitHub URL in pubspec.yaml |
+
+## License
+
+GPL 3.0

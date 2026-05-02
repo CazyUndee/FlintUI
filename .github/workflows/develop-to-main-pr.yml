@@ -32,13 +32,31 @@ jobs:
 
             const requiredChecks = ['test', 'lint', 'build'];
             let allPassed = true;
+            let foundChecks = 0;
 
             for (const checkName of requiredChecks) {
-              const check = checks.data.check_runs.find(c => c.name.includes(checkName));
-              if (!check || check.conclusion !== 'success') {
+              // For matrix jobs, find ALL matching check runs and ensure they all passed
+              const matchingChecks = checks.data.check_runs.filter(c => c.name.includes(checkName));
+              
+              if (matchingChecks.length === 0) {
+                // No checks found with this name - CI still running
                 allPassed = false;
                 break;
               }
+              
+              // All matching checks must have succeeded
+              const allMatchingPassed = matchingChecks.every(c => c.conclusion === 'success');
+              if (!allMatchingPassed) {
+                allPassed = false;
+                break;
+              }
+              
+              foundChecks += matchingChecks.length;
+            }
+
+            // If no checks were found at all, CI is likely still running
+            if (foundChecks === 0) {
+              allPassed = false;
             }
 
             core.setOutput('success', allPassed);

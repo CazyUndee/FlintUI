@@ -7,7 +7,7 @@ No browser DOM APIs are used - all output is HTML strings or data structures.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict
+from typing import Any
 
 
 @dataclass
@@ -146,3 +146,7 @@ class CronixList:
             .replace('"', "&quot;")
             .replace("'", "&#x27;")
         )
+
+
+# Backward compatibility alias - allows `from cronixui.list import List`
+List = CronixList
