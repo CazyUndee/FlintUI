@@ -1,7 +1,7 @@
 """Toast notification component."""
 
-from typing import Optional
 from enum import Enum
+from typing import Optional
 
 
 class ToastType(Enum):

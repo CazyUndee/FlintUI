@@ -9,16 +9,14 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
-from .core import HtmlElement
-
 
 @dataclass
 class AlertElement:
     """Represents a rendered alert element."""
 
     tag: str = "div"
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
     inner_html: str = ""
 
     def render_html(self) -> str:
@@ -32,7 +30,7 @@ class AlertElement:
         attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
         return f"<{self.tag}{class_attr}{attrs_str}>{self.inner_html}</{self.tag}>"
 
-    def render(self) -> "AlertElement":
+    def render(self) -> AlertElement:
         """Return self for API compatibility."""
         return self
 
@@ -68,14 +66,12 @@ class Alert:
     def __init__(
         self,
         message: str,
-        title: Optional[str] = None,
+        title: str | None = None,
         variant: str = "info",
         dismissible: bool = False,
     ):
         if variant not in self.VARIANTS:
-            raise ValueError(
-                f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}"
-            )
+            raise ValueError(f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}")
         if not message:
             raise ValueError("message cannot be empty")
 
@@ -101,19 +97,13 @@ class Alert:
         # Content area
         content_parts = []
         if self.title:
-            content_parts.append(
-                f'<div class="cn-alert-title">{self._esc(self.title)}</div>'
-            )
-        content_parts.append(
-            f'<div class="cn-alert-message">{self._esc(self.message)}</div>'
-        )
+            content_parts.append(f'<div class="cn-alert-title">{self._esc(self.title)}</div>')
+        content_parts.append(f'<div class="cn-alert-message">{self._esc(self.message)}</div>')
         parts.append(f'<div class="cn-alert-content">{"".join(content_parts)}</div>')
 
         # Dismiss button
         if self.dismissible:
-            parts.append(
-                '<button class="cn-alert-close" data-dismiss="alert">&times;</button>'
-            )
+            parts.append('<button class="cn-alert-close" data-dismiss="alert">&times;</button>')
 
         inner = "".join(parts)
         dismiss_attr = ' data-dismissible="true"' if self.dismissible else ""

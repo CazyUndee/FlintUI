@@ -1,6 +1,6 @@
 """Tests for CronixUI breadcrumb component."""
 
-from cronixui.breadcrumb import Breadcrumb, BreadcrumbItem, BreadcrumbElement
+from cronixui.breadcrumb import Breadcrumb, BreadcrumbElement, BreadcrumbItem
 
 
 class TestBreadcrumbElement:
@@ -90,8 +90,12 @@ class TestBreadcrumb:
             ]
         )
         html = bc.render_html()
-        assert html.count("cn-breadcrumb-current") == 2
-        assert html.count("cn-breadcrumb-item") == 1
+        assert html.count("cn-breadcrumb-current") == 1
+        assert html.count("cn-breadcrumb-item") == 2
+        assert "Active" in html
+        assert 'aria-current="page"' in html
+        # The explicit active item should be current, not the last item
+        assert '<span class="cn-breadcrumb-current" aria-current="page">Active</span>' in html
 
     def test_html_escaping(self):
         bc = Breadcrumb(

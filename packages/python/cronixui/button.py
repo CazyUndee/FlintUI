@@ -1,7 +1,7 @@
 """CronixUI Button Component"""
 
-from typing import Optional, Callable, Dict, Any, List
 from dataclasses import dataclass, field
+from typing import Callable, Dict, List, Optional
 
 
 @dataclass
@@ -53,9 +53,7 @@ class Button:
         onclick: Optional[Callable] = None,
     ):
         if variant not in self.VARIANTS:
-            raise ValueError(
-                f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}"
-            )
+            raise ValueError(f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}")
         if size not in self.SIZES:
             raise ValueError(f"Invalid size '{size}'. Must be one of {self.SIZES}")
 
@@ -130,4 +128,3 @@ class ButtonGroup:
         """
         buttons_html = "".join(btn.render_html() for btn in self.buttons)
         return f'<div class="cn-btn-group">{buttons_html}</div>'
-

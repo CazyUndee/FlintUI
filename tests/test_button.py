@@ -1,7 +1,7 @@
 """Tests for CronixUI button component."""
 
 import pytest
-from cronixui.button import Button, ButtonGroup, ButtonElement
+from cronixui.button import Button, ButtonElement, ButtonGroup
 
 
 class TestButtonElement:

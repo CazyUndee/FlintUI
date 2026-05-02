@@ -1,6 +1,5 @@
 """Tests for CronixUI card component."""
 
-import pytest
 from cronixui.card import Card, CardElement
 
 

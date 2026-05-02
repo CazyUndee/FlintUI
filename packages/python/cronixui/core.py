@@ -32,7 +32,7 @@ def escape_html(text: str) -> str:
     )
 
 
-def classes(*names: Optional[str], **flags: bool) -> str:
+def classes(*names: str | None, **flags: bool) -> str:
     """Build a CSS class string from names and conditional flags.
 
     Args:
@@ -53,7 +53,7 @@ def classes(*names: Optional[str], **flags: bool) -> str:
     return " ".join(parts)
 
 
-def attrs(**kwargs: Optional[str]) -> str:
+def attrs(**kwargs: str | None) -> str:
     """Build an HTML attribute string from keyword arguments.
 
     Args:
@@ -102,11 +102,11 @@ class HtmlElement:
     """
 
     tag: str
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
     text: str = ""
     inner_html: str = ""
-    children: List["HtmlElement"] = field(default_factory=list)
+    children: list[HtmlElement] = field(default_factory=list)
 
     def render_html(self) -> str:
         """Render this element and all children as an HTML string.
@@ -116,9 +116,7 @@ class HtmlElement:
         """
         class_str = " ".join(self.classes)
         class_attr = f' class="{class_str}"' if class_str else ""
-        attrs_str = "".join(
-            f' {k}="{v}"' for k, v in self.attributes.items()
-        )
+        attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
 
         if self.inner_html:
             content = self.inner_html
@@ -131,7 +129,7 @@ class HtmlElement:
 
         return f"<{self.tag}{class_attr}{attrs_str}>{content}</{self.tag}>"
 
-    def render(self) -> "HtmlElement":
+    def render(self) -> HtmlElement:
         """Return self (for API compatibility with components).
 
         Returns:
@@ -160,11 +158,9 @@ class ComponentGroup:
     """
 
     tag: str = "div"
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
-    children: List[Union[HtmlElement, "ComponentGroup"]] = field(
-        default_factory=list
-    )
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
+    children: list[Union[HtmlElement, ComponentGroup]] = field(default_factory=list)
 
     def render_html(self) -> str:
         """Render all children as HTML inside the container.
@@ -174,18 +170,14 @@ class ComponentGroup:
         """
         class_str = " ".join(self.classes)
         class_attr = f' class="{class_str}"' if class_str else ""
-        attrs_str = "".join(
-            f' {k}="{v}"' for k, v in self.attributes.items()
-        )
+        attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
         children_html = "".join(
-            child.render_html()
-            if hasattr(child, "render_html")
-            else str(child)
+            child.render_html() if hasattr(child, "render_html") else str(child)
             for child in self.children
         )
         return f"<{self.tag}{class_attr}{attrs_str}>{children_html}</{self.tag}>"
 
-    def render(self) -> "ComponentGroup":
+    def render(self) -> ComponentGroup:
         """Return self (for API compatibility).
 
         Returns:
@@ -196,11 +188,11 @@ class ComponentGroup:
 
 def el(
     tag: str,
-    class_name: Optional[str] = None,
-    attrs: Optional[Dict[str, str]] = None,
+    class_name: str | None = None,
+    attrs: dict[str, str] | None = None,
     text: str = "",
     inner_html: str = "",
-    children: Optional[List[HtmlElement]] = None,
+    children: list[HtmlElement] | None = None,
 ) -> HtmlElement:
     """Create an HtmlElement with a convenient builder API.
 

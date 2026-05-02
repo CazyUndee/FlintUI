@@ -1,6 +1,5 @@
 """Tests for CronixUI toast component."""
 
-import pytest
 from cronixui.toast import Toast, ToastType
 
 

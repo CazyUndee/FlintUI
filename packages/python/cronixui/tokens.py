@@ -60,9 +60,7 @@ BORDER_FOCUS = "rgba(255, 255, 255, 0.25)"
 class Typography:
     """Typography tokens."""
 
-    font_family: str = (
-        "'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    )
+    font_family: str = "'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
     font_mono: str = "'JetBrains Mono', 'Fira Code', 'Consolas', monospace"
 
     # Font sizes

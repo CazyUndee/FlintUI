@@ -15,8 +15,8 @@ class LayoutElement:
     """Represents a rendered layout element."""
 
     tag: str = "div"
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
     inner_html: str = ""
 
     def render_html(self) -> str:
@@ -30,7 +30,7 @@ class LayoutElement:
         attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
         return f"<{self.tag}{class_attr}{attrs_str}>{self.inner_html}</{self.tag}>"
 
-    def render(self) -> "LayoutElement":
+    def render(self) -> LayoutElement:
         """Return self for API compatibility."""
         return self
 
@@ -48,7 +48,7 @@ class NavItem:
 
     text: str
     href: str = "#"
-    icon: Optional[str] = None
+    icon: str | None = None
     active: bool = False
 
 
@@ -82,8 +82,8 @@ class Header:
     def __init__(
         self,
         brand: str = "",
-        nav_items: Optional[List[NavItem]] = None,
-        action_html: Optional[str] = None,
+        nav_items: list[NavItem] | None = None,
+        action_html: str | None = None,
     ):
         self.brand = brand
         self.nav_items = nav_items or []
@@ -152,9 +152,9 @@ class Sidebar:
 
     def __init__(
         self,
-        items: Optional[List[NavItem]] = None,
-        header_html: Optional[str] = None,
-        footer_html: Optional[str] = None,
+        items: list[NavItem] | None = None,
+        header_html: str | None = None,
+        footer_html: str | None = None,
     ):
         self.items = items or []
         self.header_html = header_html or ""
@@ -180,8 +180,8 @@ class Sidebar:
             active_class = " cn-sidebar-active" if item.active else ""
             item_html = f'<a class="cn-sidebar-item{active_class}" href="{self._esc(item.href)}">'
             if item.icon:
-                item_html += f'<span>{item.icon}</span>'
-            item_html += f'<span>{self._esc(item.text)}</span>'
+                item_html += f"<span>{item.icon}</span>"
+            item_html += f"<span>{self._esc(item.text)}</span>"
             item_html += "</a>"
             nav_parts.append(item_html)
 
@@ -236,7 +236,7 @@ class Footer:
     def __init__(
         self,
         copyright: str = "",
-        links: Optional[List[tuple]] = None,
+        links: list[tuple] | None = None,
     ):
         self.copyright = copyright
         self.links = links or []

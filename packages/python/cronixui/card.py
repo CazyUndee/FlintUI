@@ -15,8 +15,8 @@ class CardElement:
     """Represents a rendered card element."""
 
     tag: str = "div"
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
     inner_html: str = ""
 
     def render_html(self) -> str:
@@ -30,7 +30,7 @@ class CardElement:
         attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
         return f"<{self.tag}{class_attr}{attrs_str}>{self.inner_html}</{self.tag}>"
 
-    def render(self) -> "CardElement":
+    def render(self) -> CardElement:
         """Return self for API compatibility."""
         return self
 
@@ -65,11 +65,11 @@ class Card:
 
     def __init__(
         self,
-        title: Optional[str] = None,
-        subtitle: Optional[str] = None,
+        title: str | None = None,
+        subtitle: str | None = None,
         clickable: bool = False,
-        body: Optional[str] = None,
-        footer: Optional[str] = None,
+        body: str | None = None,
+        footer: str | None = None,
     ):
         self.title = title
         self.subtitle = subtitle
@@ -93,13 +93,9 @@ class Card:
         if self.title or self.subtitle:
             header_parts = []
             if self.title:
-                header_parts.append(
-                    f'<h3 class="cn-card-title">{self._esc(self.title)}</h3>'
-                )
+                header_parts.append(f'<h3 class="cn-card-title">{self._esc(self.title)}</h3>')
             if self.subtitle:
-                header_parts.append(
-                    f'<p class="cn-card-subtitle">{self._esc(self.subtitle)}</p>'
-                )
+                header_parts.append(f'<p class="cn-card-subtitle">{self._esc(self.subtitle)}</p>')
             parts.append(f'<div class="cn-card-header">{"".join(header_parts)}</div>')
 
         # Body
@@ -123,7 +119,7 @@ class Card:
         """
         return self.render().render_html()
 
-    def with_body(self, content: str) -> "Card":
+    def with_body(self, content: str) -> Card:
         """Set the card body content and return self for chaining.
 
         Args:
@@ -138,7 +134,7 @@ class Card:
         self._body = content
         return self
 
-    def with_footer(self, content: str) -> "Card":
+    def with_footer(self, content: str) -> Card:
         """Set the card footer content and return self for chaining.
 
         Args:
@@ -184,8 +180,8 @@ class CardIcon:
     def __init__(
         self,
         icon_svg: str,
-        title: Optional[str] = None,
-        subtitle: Optional[str] = None,
+        title: str | None = None,
+        subtitle: str | None = None,
     ):
         if not icon_svg:
             raise ValueError("icon_svg cannot be empty")
@@ -206,9 +202,7 @@ class CardIcon:
         if self.title:
             parts.append(f'<h3 class="cn-card-title">{self._esc(self.title)}</h3>')
         if self.subtitle:
-            parts.append(
-                f'<p class="cn-card-subtitle">{self._esc(self.subtitle)}</p>'
-            )
+            parts.append(f'<p class="cn-card-subtitle">{self._esc(self.subtitle)}</p>')
 
         return CardElement(
             classes=classes,

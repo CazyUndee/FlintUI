@@ -10,8 +10,46 @@ permissions:
   pull-requests: write
 
 jobs:
+  check-ci-status:
+    runs-on: ubuntu-latest
+    outputs:
+      ci-success: ${{ steps.check.outputs.success }}
+    steps:
+      - name: Check CI workflow status
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const sha = context.sha;
+
+            const checks = await github.rest.checks.listForRef({
+              owner,
+              repo,
+              ref: sha
+            });
+
+            const requiredChecks = ['test', 'lint', 'build'];
+            let allPassed = true;
+
+            for (const checkName of requiredChecks) {
+              const check = checks.data.check_runs.find(c => c.name.includes(checkName));
+              if (!check || check.conclusion !== 'success') {
+                allPassed = false;
+                break;
+              }
+            }
+
+            core.setOutput('success', allPassed);
+            if (!allPassed) {
+              core.info('CI checks have not passed yet. Skipping PR creation.');
+            }
+
   open-pr:
     runs-on: ubuntu-latest
+    needs: check-ci-status
+    if: needs.check-ci-status.outputs.ci-success == 'true'
     steps:
       - name: Ensure PR from develop to main exists
         uses: actions/github-script@v7
@@ -46,7 +84,8 @@ jobs:
                 body: [
                   "Automated PR from `develop` to `main`.",
                   "",
-                  "Please review and merge manually after verification."
+                  "CI checks have passed on develop branch.",
+                  "Please review and merge after verification."
                 ].join("\n")
               });
 

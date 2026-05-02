@@ -7,7 +7,7 @@ No browser DOM APIs are used - all output is HTML strings or data structures.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Callable, Dict, List, Optional
+from typing import Dict, List, Optional
 
 
 @dataclass
@@ -15,8 +15,8 @@ class BadgeElement:
     """Represents a rendered badge or tag element."""
 
     tag: str = "span"
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
     inner_html: str = ""
 
     def render_html(self) -> str:
@@ -30,7 +30,7 @@ class BadgeElement:
         attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
         return f"<{self.tag}{class_attr}{attrs_str}>{self.inner_html}</{self.tag}>"
 
-    def render(self) -> "BadgeElement":
+    def render(self) -> BadgeElement:
         """Return self for API compatibility."""
         return self
 
@@ -64,9 +64,7 @@ class Badge:
         if not text:
             raise ValueError("text cannot be empty")
         if variant not in self.VARIANTS:
-            raise ValueError(
-                f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}"
-            )
+            raise ValueError(f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}")
 
         self.text = text
         self.variant = variant
@@ -131,7 +129,7 @@ class Tag:
         self,
         text: str,
         removable: bool = False,
-        on_remove: Optional[str] = None,
+        on_remove: str | None = None,
     ):
         if not text:
             raise ValueError("text cannot be empty")
@@ -146,16 +144,14 @@ class Tag:
         Returns:
             BadgeElement representing the tag
         """
-        attrs: Dict[str, str] = {}
+        attrs: dict[str, str] = {}
         if self.removable and self.on_remove:
             attrs["data-on-remove"] = self.on_remove
 
         inner_parts = [self._esc(self.text)]
 
         if self.removable:
-            inner_parts.append(
-                f'<span class="cn-tag-remove">{self._REMOVE_ICON}</span>'
-            )
+            inner_parts.append(f'<span class="cn-tag-remove">{self._REMOVE_ICON}</span>')
 
         return BadgeElement(
             classes=["cn-tag"],

@@ -15,8 +15,8 @@ class BreadcrumbElement:
     """Represents a rendered breadcrumb element."""
 
     tag: str = "nav"
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
     inner_html: str = ""
 
     def render_html(self) -> str:
@@ -30,7 +30,7 @@ class BreadcrumbElement:
         attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
         return f"<{self.tag}{class_attr}{attrs_str}>{self.inner_html}</{self.tag}>"
 
-    def render(self) -> "BreadcrumbElement":
+    def render(self) -> BreadcrumbElement:
         """Return self for API compatibility."""
         return self
 
@@ -70,7 +70,7 @@ class Breadcrumb:
 
     def __init__(
         self,
-        items: Optional[List[BreadcrumbItem]] = None,
+        items: list[BreadcrumbItem] | None = None,
         separator: str = "/",
     ):
         self.items = items or []
@@ -84,6 +84,16 @@ class Breadcrumb:
         """
         parts = []
 
+        # Determine which item should be marked as current
+        # Priority: explicit active item if present, otherwise the last item
+        current_index: int | None = None
+        for i, item in enumerate(self.items):
+            if item.active:
+                current_index = i
+                break
+        if current_index is None and self.items:
+            current_index = len(self.items) - 1
+
         for i, item in enumerate(self.items):
             if i > 0:
                 parts.append(
@@ -91,8 +101,7 @@ class Breadcrumb:
                     f"{self._esc(self.separator)}</span>"
                 )
 
-            is_last = i == len(self.items) - 1
-            if is_last or item.active:
+            if i == current_index:
                 parts.append(
                     f'<span class="cn-breadcrumb-current" aria-current="page">'
                     f"{self._esc(item.label)}</span>"

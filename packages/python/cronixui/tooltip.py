@@ -7,7 +7,7 @@ No browser DOM APIs are used - all output is HTML strings or data structures.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 
 @dataclass
@@ -15,8 +15,8 @@ class TooltipElement:
     """Represents a rendered tooltip element."""
 
     tag: str = "div"
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
     inner_html: str = ""
 
     def render_html(self) -> str:
@@ -30,7 +30,7 @@ class TooltipElement:
         attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
         return f"<{self.tag}{class_attr}{attrs_str}>{self.inner_html}</{self.tag}>"
 
-    def render(self) -> "TooltipElement":
+    def render(self) -> TooltipElement:
         """Return self for API compatibility."""
         return self
 
@@ -62,9 +62,7 @@ class Tooltip:
         if not content:
             raise ValueError("content cannot be empty")
         if position not in self.POSITIONS:
-            raise ValueError(
-                f"Invalid position '{position}'. Must be one of {self.POSITIONS}"
-            )
+            raise ValueError(f"Invalid position '{position}'. Must be one of {self.POSITIONS}")
 
         self.content = content
         self.position = position
@@ -75,9 +73,7 @@ class Tooltip:
         Returns:
             TooltipElement representing the tooltip
         """
-        inner = (
-            f'<div class="cn-tooltip-content">{self._esc(self.content)}</div>'
-        )
+        inner = f'<div class="cn-tooltip-content">{self._esc(self.content)}</div>'
 
         return TooltipElement(
             classes=["cn-tooltip", f"cn-tooltip-{self.position}"],

@@ -1,7 +1,6 @@
 """Tests for CronixUI badge and tag components."""
 
-import pytest
-from cronixui.badge import Badge, Tag, BadgeElement
+from cronixui.badge import Badge, Tag
 
 
 class TestBadge:

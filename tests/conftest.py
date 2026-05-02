@@ -1,8 +1,9 @@
 """Shared pytest fixtures for CronixUI tests."""
 
-import pytest
 import sys
 from pathlib import Path
+
+import pytest
 
 # Add the python package to the path so we can import cronixui
 PYTHON_PACKAGE_PATH = Path(__file__).parent.parent / "packages" / "python"

@@ -1,7 +1,7 @@
 """Search component."""
 
-from typing import Callable, Optional, List
 from dataclasses import dataclass
+from typing import Callable, List, Optional
 
 
 @dataclass

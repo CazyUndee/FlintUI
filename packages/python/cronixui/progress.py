@@ -15,8 +15,8 @@ class ProgressElement:
     """Represents a rendered progress/stat element."""
 
     tag: str = "div"
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
     inner_html: str = ""
 
     def render_html(self) -> str:
@@ -30,7 +30,7 @@ class ProgressElement:
         attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
         return f"<{self.tag}{class_attr}{attrs_str}>{self.inner_html}</{self.tag}>"
 
-    def render(self) -> "ProgressElement":
+    def render(self) -> ProgressElement:
         """Return self for API compatibility."""
         return self
 
@@ -75,9 +75,7 @@ class Progress:
         if value < 0:
             raise ValueError("value cannot be negative")
         if variant not in self.VARIANTS:
-            raise ValueError(
-                f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}"
-            )
+            raise ValueError(f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}")
         if size not in self.SIZES:
             raise ValueError(f"Invalid size '{size}'. Must be one of {self.SIZES}")
 
@@ -113,13 +111,9 @@ class Progress:
 
         # Bar fill
         percentage = (self.value / self.max) * 100
-        bar_fill = (
-            f'<div class="cn-progress-bar" style="width: {percentage}%;"></div>'
-        )
+        bar_fill = f'<div class="cn-progress-bar" style="width: {percentage}%;"></div>'
 
-        parts.append(
-            f'<div class="{" ".join(bar_classes)}">{bar_fill}</div>'
-        )
+        parts.append(f'<div class="{" ".join(bar_classes)}">{bar_fill}</div>')
 
         return ProgressElement(inner_html="".join(parts))
 
@@ -131,7 +125,7 @@ class Progress:
         """
         return self.render().render_html()
 
-    def with_value(self, value: float) -> "Progress":
+    def with_value(self, value: float) -> Progress:
         """Return a new Progress with updated value (immutable pattern).
 
         Since components generate strings, we can't update in place after rendering.
@@ -175,8 +169,8 @@ class Stat:
         self,
         value: str,
         label: str,
-        delta: Optional[str] = None,
-        delta_type: Optional[str] = None,
+        delta: str | None = None,
+        delta_type: str | None = None,
     ):
         if not value:
             raise ValueError("value cannot be empty")
@@ -203,9 +197,7 @@ class Stat:
             delta_classes = ["cn-stat-delta"]
             if self.delta_type:
                 delta_classes.append(f"cn-stat-delta-{self.delta_type}")
-            parts.append(
-                f'<div class="{" ".join(delta_classes)}">{self._esc(self.delta)}</div>'
-            )
+            parts.append(f'<div class="{" ".join(delta_classes)}">{self._esc(self.delta)}</div>')
 
         return ProgressElement(
             classes=["cn-stat"],

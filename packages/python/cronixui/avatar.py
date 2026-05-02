@@ -9,16 +9,14 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
-from .core import HtmlElement
-
 
 @dataclass
 class AvatarElement:
     """Represents a rendered avatar element."""
 
     tag: str = "div"
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
     inner_html: str = ""
 
     def render_html(self) -> str:
@@ -32,7 +30,7 @@ class AvatarElement:
         attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
         return f"<{self.tag}{class_attr}{attrs_str}>{self.inner_html}</{self.tag}>"
 
-    def render(self) -> "AvatarElement":
+    def render(self) -> AvatarElement:
         """Return self for API compatibility."""
         return self
 
@@ -62,8 +60,8 @@ class Avatar:
 
     def __init__(
         self,
-        initials: Optional[str] = None,
-        image_url: Optional[str] = None,
+        initials: str | None = None,
+        image_url: str | None = None,
         size: str = "md",
     ):
         if size not in self.SIZES:

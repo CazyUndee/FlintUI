@@ -1,12 +1,11 @@
 """Tests for CronixUI core module."""
 
-import pytest
 from cronixui.core import (
-    HtmlElement,
     ComponentGroup,
-    el,
-    classes,
+    HtmlElement,
     attrs,
+    classes,
+    el,
     escape_html,
 )
 

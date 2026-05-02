@@ -15,8 +15,8 @@ class TableElement:
     """Represents a rendered table element."""
 
     tag: str = "div"
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
     inner_html: str = ""
 
     def render_html(self) -> str:
@@ -30,7 +30,7 @@ class TableElement:
         attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
         return f"<{self.tag}{class_attr}{attrs_str}>{self.inner_html}</{self.tag}>"
 
-    def render(self) -> "TableElement":
+    def render(self) -> TableElement:
         """Return self for API compatibility."""
         return self
 
@@ -66,10 +66,10 @@ class Table:
 
     def __init__(
         self,
-        headers: List[str],
-        rows: List[List[str]],
+        headers: list[str],
+        rows: list[list[str]],
         sortable: bool = False,
-        caption: Optional[str] = None,
+        caption: str | None = None,
     ):
         if not headers:
             raise ValueError("headers cannot be empty")
@@ -92,9 +92,7 @@ class Table:
             parts.append(f"<caption>{self._esc(self.caption)}</caption>")
 
         # Header
-        header_cells = "".join(
-            f"<th>{self._esc(h)}</th>" for h in self.headers
-        )
+        header_cells = "".join(f"<th>{self._esc(h)}</th>" for h in self.headers)
         parts.append(f"<thead><tr>{header_cells}</tr></thead>")
 
         # Body

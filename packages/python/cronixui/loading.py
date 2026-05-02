@@ -15,8 +15,8 @@ class LoadingElement:
     """Represents a rendered loading element."""
 
     tag: str = "div"
-    classes: List[str] = field(default_factory=list)
-    attributes: Dict[str, str] = field(default_factory=dict)
+    classes: list[str] = field(default_factory=list)
+    attributes: dict[str, str] = field(default_factory=dict)
     inner_html: str = ""
 
     def render_html(self) -> str:
@@ -30,7 +30,7 @@ class LoadingElement:
         attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
         return f"<{self.tag}{class_attr}{attrs_str}>{self.inner_html}</{self.tag}>"
 
-    def render(self) -> "LoadingElement":
+    def render(self) -> LoadingElement:
         """Return self for API compatibility."""
         return self
 
@@ -91,11 +91,9 @@ class Skeleton:
 
     VARIANTS = ("text", "title", "avatar")
 
-    def __init__(self, variant: str = "text", width: Optional[str] = None):
+    def __init__(self, variant: str = "text", width: str | None = None):
         if variant not in self.VARIANTS:
-            raise ValueError(
-                f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}"
-            )
+            raise ValueError(f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}")
 
         self.variant = variant
         self.width = width
@@ -108,7 +106,7 @@ class Skeleton:
         """
         classes = ["cn-skeleton", f"cn-skeleton-{self.variant}"]
 
-        attrs: Dict[str, str] = {}
+        attrs: dict[str, str] = {}
         if self.width:
             attrs["style"] = f"width: {self.width};"
 
