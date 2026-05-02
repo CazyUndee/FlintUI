@@ -7,6 +7,7 @@ as strings or structured data. It does NOT use browser DOM APIs.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any, Dict, List, Union
 
 
 def escape_html(text: str) -> str:
@@ -31,7 +32,7 @@ def escape_html(text: str) -> str:
     )
 
 
-def classes(*names: str | None, **flags: bool) -> str:
+def classes(*names: Union[str, None], **flags: bool) -> str:
     """Build a CSS class string from names and conditional flags.
 
     Args:
@@ -52,7 +53,7 @@ def classes(*names: str | None, **flags: bool) -> str:
     return " ".join(parts)
 
 
-def attrs(**kwargs: str | None) -> str:
+def attrs(**kwargs: Union[str, None]) -> str:
     """Build an HTML attribute string from keyword arguments.
 
     Args:
@@ -101,11 +102,11 @@ class HtmlElement:
     """
 
     tag: str
-    classes: list[str] = field(default_factory=list)
-    attributes: dict[str, str] = field(default_factory=dict)
+    classes: List[str] = field(default_factory=list)
+    attributes: Dict[str, str] = field(default_factory=dict)
     text: str = ""
     inner_html: str = ""
-    children: list[HtmlElement] = field(default_factory=list)
+    children: List[HtmlElement] = field(default_factory=list)
 
     def render_html(self) -> str:
         """Render this element and all children as an HTML string.
@@ -157,9 +158,9 @@ class ComponentGroup:
     """
 
     tag: str = "div"
-    classes: list[str] = field(default_factory=list)
-    attributes: dict[str, str] = field(default_factory=dict)
-    children: list[HtmlElement | ComponentGroup] = field(default_factory=list)
+    classes: List[str] = field(default_factory=list)
+    attributes: Dict[str, str] = field(default_factory=dict)
+    children: List[Union[HtmlElement, ComponentGroup]] = field(default_factory=list)
 
     def render_html(self) -> str:
         """Render all children as HTML inside the container.
@@ -187,11 +188,11 @@ class ComponentGroup:
 
 def el(
     tag: str,
-    class_name: str | None = None,
-    attrs: dict[str, str] | None = None,
+    class_name: Union[str, None] = None,
+    attrs: Union[Dict[str, str], None] = None,
     text: str = "",
     inner_html: str = "",
-    children: list[HtmlElement] | None = None,
+    children: Union[List[HtmlElement], None] = None,
 ) -> HtmlElement:
     """Create an HtmlElement with a convenient builder API.
 
