@@ -7,7 +7,6 @@ No browser DOM APIs are used - all output is HTML strings or data structures.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
 
 
 @dataclass
@@ -64,7 +63,9 @@ class Badge:
         if not text:
             raise ValueError("text cannot be empty")
         if variant not in self.VARIANTS:
-            raise ValueError(f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}")
+            raise ValueError(
+                f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}"
+            )
 
         self.text = text
         self.variant = variant
@@ -120,10 +121,16 @@ class Tag:
 
         >>> removable = Tag("JavaScript", removable=True, on_remove="handleRemove")
         >>> print(removable.render_html())
-        <span class="cn-tag" data-on-remove="handleRemove">JavaScript<span class="cn-tag-remove">...</span></span>
+        <span class="cn-tag" data-on-remove="handleRemove">
+            JavaScript<span class="cn-tag-remove">...</span>
+        </span>
     """
 
-    _REMOVE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 6L6 18M6 6l12 12"/></svg>'
+    _REMOVE_ICON = (
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">'
+        '<path d="M18 6L6 18M6 6l12 12"/>'
+        '</svg>'
+    )
 
     def __init__(
         self,
@@ -151,7 +158,9 @@ class Tag:
         inner_parts = [self._esc(self.text)]
 
         if self.removable:
-            inner_parts.append(f'<span class="cn-tag-remove">{self._REMOVE_ICON}</span>')
+            inner_parts.append(
+                f'<span class="cn-tag-remove">{self._REMOVE_ICON}</span>'
+            )
 
         return BadgeElement(
             classes=["cn-tag"],

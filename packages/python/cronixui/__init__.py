@@ -6,7 +6,6 @@ from .accordion import Accordion
 from .alert import Alert
 from .avatar import Avatar, AvatarGroup
 from .badge import Badge, Tag
-from .breadcrumb import Breadcrumb, BreadcrumbItem
 from .button import Button, ButtonGroup
 from .card import Card, CardIcon
 from .command_palette import CommandPalette, CommandPaletteItem
@@ -21,7 +20,7 @@ from .core import (
 from .dropdown import Dropdown
 from .form import Checkbox, FileInput, FormField, Input, Radio, Select, Slider, Textarea
 from .layout import Container, Divider, Footer, Header, Section, Sidebar
-from .list import CronixList as List
+from .list import List
 from .loading import Skeleton, Spinner
 from .modal import Modal
 from .nav import Nav
@@ -93,8 +92,6 @@ __all__ = [
     "Search",
     "SearchItem",
     "Nav",
-    "Breadcrumb",
-    "BreadcrumbItem",
     "Button",
     "ButtonGroup",
     "Card",

@@ -8,7 +8,6 @@ No browser DOM APIs are used - all output is HTML strings or data structures.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple, Union
 
 
 @dataclass
@@ -56,7 +55,10 @@ class Input:
 
         >>> with_icon = Input(placeholder="Search...", icon="<svg>...</svg>")
         >>> print(with_icon.render_html())
-        <div class="cn-input-icon-wrapper"><span class="cn-input-icon">...</span><input class="cn-input" placeholder="Search..." /></div>
+        <div class="cn-input-icon-wrapper">
+            <span class="cn-input-icon">...</span>
+            <input class="cn-input" placeholder="Search..." />
+        </div>
     """
 
     SIZES = ("sm", "md", "lg")
@@ -138,7 +140,8 @@ class Textarea:
     Example:
         >>> ta = Textarea(placeholder="Write your message...", rows=6)
         >>> print(ta.render_html())
-        <textarea class="cn-input cn-textarea" placeholder="Write your message..." rows="6"></textarea>
+        <textarea class="cn-input cn-textarea" placeholder="Write your message..." rows="6">
+        </textarea>
     """
 
     def __init__(
@@ -212,7 +215,7 @@ class FormField:
     def __init__(
         self,
         label: str,
-        input_component: Union[Input, Textarea, Checkbox, Radio, Select, Slider, HasRenderHtml],
+        input_component: Input | Textarea | Checkbox | Radio | Select | Slider | HasRenderHtml,
         error: str | None = None,
         help_text: str | None = None,
         required: bool = False,
@@ -233,7 +236,7 @@ class FormField:
             FormElement wrapping the label, input, and optional messages
         """
         required_mark = ' <span class="cn-form-required">*</span>' if self.required else ""
-        label_text = f"{self._esc(self.label)}{required_mark}"
+        label_text = f'{self._esc(self.label)}{required_mark}'
 
         if hasattr(self.input, "render_html"):
             input_html = self.input.render_html()
@@ -288,7 +291,11 @@ class Checkbox:
     Example:
         >>> cb = Checkbox("Accept terms", checked=True)
         >>> print(cb.render_html())
-        <label class="cn-checkbox"><input type="checkbox" checked="" /><span class="cn-checkbox-box"></span><span class="cn-checkbox-label">Accept terms</span></label>
+        <label class="cn-checkbox">
+            <input type="checkbox" checked="" />
+            <span class="cn-checkbox-box"></span>
+            <span class="cn-checkbox-label">Accept terms</span>
+        </label>
     """
 
     def __init__(
@@ -328,7 +335,7 @@ class Checkbox:
 
         inner = (
             f'<label class="{label_classes}">'
-            f"<input{attrs_str} />"
+            f'<input{attrs_str} />'
             f'<span class="cn-checkbox-box"></span>'
             f'<span class="cn-checkbox-label">{self._esc(self.label)}</span>'
             f"</label>"
@@ -373,7 +380,7 @@ class Radio:
     def __init__(
         self,
         name: str,
-        options: list[Union[tuple[str, str], str]],
+        options: list[tuple[str, str] | str],
         selected: str | None = None,
         disabled: bool = False,
     ):
@@ -414,7 +421,7 @@ class Radio:
 
             parts.append(
                 f'<label class="cn-radio">'
-                f"<input{attrs_str} />"
+                f'<input{attrs_str} />'
                 f'<span class="cn-radio-box"></span>'
                 f'<span class="cn-radio-label">{self._esc(label)}</span>'
                 f"</label>"
@@ -461,7 +468,7 @@ class Select:
 
     def __init__(
         self,
-        options: list[Union[tuple[str, str], str]],
+        options: list[tuple[str, str] | str],
         placeholder: str = "",
         name: str | None = None,
         disabled: bool = False,
@@ -610,7 +617,13 @@ class FileInput:
         >>> print(file.render_html())
     """
 
-    _UPLOAD_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>'
+    _UPLOAD_ICON = (
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">'
+        '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>'
+        '<polyline points="17 8 12 3 7 8"/>'
+        '<line x1="12" y1="3" x2="12" y2="15"/>'
+        '</svg>'
+    )
 
     def __init__(
         self,
@@ -640,7 +653,7 @@ class FileInput:
 
         inner = (
             f'<div class="cn-file-input">'
-            f"<input{input_attrs_str} />"
+            f'<input{input_attrs_str} />'
             f'<div class="cn-file-input-label">'
             f'<div class="cn-file-input-icon">{self._UPLOAD_ICON}</div>'
             f'<div class="cn-file-input-text">Drag and drop or <span>browse</span></div>'
@@ -662,4 +675,5 @@ class FileInput:
 class HasRenderHtml:
     """Protocol-like base for type hints: any object with render_html()."""
 
-    def render_html(self) -> str: ...
+    def render_html(self) -> str:
+        ...

@@ -7,7 +7,6 @@ No browser DOM APIs are used - all output is HTML strings or data structures.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List
 
 
 @dataclass
@@ -48,12 +47,16 @@ class Tooltip:
     Example:
         >>> tooltip = Tooltip("Click to edit", position="top")
         >>> print(tooltip.render_html())
-        <div class="cn-tooltip cn-tooltip-top"><div class="cn-tooltip-content">Click to edit</div></div>
+        <div class="cn-tooltip cn-tooltip-top">
+            <div class="cn-tooltip-content">Click to edit</div>
+        </div>
 
         >>> # Wrap an element with tooltip
         >>> wrapped = tooltip.wrap_html("<button>Edit</button>")
         >>> print(wrapped)
-        <span class="cn-tooltip-wrapper" data-tooltip="Click to edit" data-position="top"><button>Edit</button></span>
+        <span class="cn-tooltip-wrapper" data-tooltip="Click to edit" data-position="top">
+            <button>Edit</button>
+        </span>
     """
 
     POSITIONS = ("top", "bottom", "left", "right")
@@ -62,7 +65,9 @@ class Tooltip:
         if not content:
             raise ValueError("content cannot be empty")
         if position not in self.POSITIONS:
-            raise ValueError(f"Invalid position '{position}'. Must be one of {self.POSITIONS}")
+            raise ValueError(
+                f"Invalid position '{position}'. Must be one of {self.POSITIONS}"
+            )
 
         self.content = content
         self.position = position
@@ -73,7 +78,9 @@ class Tooltip:
         Returns:
             TooltipElement representing the tooltip
         """
-        inner = f'<div class="cn-tooltip-content">{self._esc(self.content)}</div>'
+        inner = (
+            f'<div class="cn-tooltip-content">{self._esc(self.content)}</div>'
+        )
 
         return TooltipElement(
             classes=["cn-tooltip", f"cn-tooltip-{self.position}"],
@@ -104,7 +111,9 @@ class Tooltip:
             >>> tooltip = Tooltip("Click to save")
             >>> wrapped = tooltip.wrap_html("<button>Save</button>")
             >>> print(wrapped)
-            <span class="cn-tooltip-wrapper" data-tooltip="Click to save" data-position="top"><button>Save</button></span>
+            <span class="cn-tooltip-wrapper" data-tooltip="Click to save" data-position="top">
+                <button>Save</button>
+            </span>
         """
         return (
             f'<span class="cn-tooltip-wrapper"'

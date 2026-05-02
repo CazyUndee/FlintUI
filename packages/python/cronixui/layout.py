@@ -7,7 +7,6 @@ No browser DOM APIs are used - all output is HTML strings or data structures.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
 
 
 @dataclass
@@ -99,7 +98,8 @@ class Header:
 
         # Navigation
         nav_items_html = "".join(
-            f'<a class="cn-btn cn-btn-ghost" href="{self._esc(item.href)}">{self._esc(item.text)}</a>'
+            f'<a class="cn-btn cn-btn-ghost" href="{self._esc(item.href)}">'
+            f'{self._esc(item.text)}</a>'
             for item in self.nav_items
         )
         parts.append(f'<nav class="cn-header-nav">{nav_items_html}</nav>')

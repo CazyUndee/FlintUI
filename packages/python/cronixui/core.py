@@ -7,7 +7,6 @@ as strings or structured data. It does NOT use browser DOM APIs.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Union
 
 
 def escape_html(text: str) -> str:
@@ -116,7 +115,9 @@ class HtmlElement:
         """
         class_str = " ".join(self.classes)
         class_attr = f' class="{class_str}"' if class_str else ""
-        attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
+        attrs_str = "".join(
+            f' {k}="{v}"' for k, v in self.attributes.items()
+        )
 
         if self.inner_html:
             content = self.inner_html
@@ -160,7 +161,9 @@ class ComponentGroup:
     tag: str = "div"
     classes: list[str] = field(default_factory=list)
     attributes: dict[str, str] = field(default_factory=dict)
-    children: list[Union[HtmlElement, ComponentGroup]] = field(default_factory=list)
+    children: list[HtmlElement | ComponentGroup] = field(
+        default_factory=list
+    )
 
     def render_html(self) -> str:
         """Render all children as HTML inside the container.
@@ -170,9 +173,13 @@ class ComponentGroup:
         """
         class_str = " ".join(self.classes)
         class_attr = f' class="{class_str}"' if class_str else ""
-        attrs_str = "".join(f' {k}="{v}"' for k, v in self.attributes.items())
+        attrs_str = "".join(
+            f' {k}="{v}"' for k, v in self.attributes.items()
+        )
         children_html = "".join(
-            child.render_html() if hasattr(child, "render_html") else str(child)
+            child.render_html()
+            if hasattr(child, "render_html")
+            else str(child)
             for child in self.children
         )
         return f"<{self.tag}{class_attr}{attrs_str}>{children_html}</{self.tag}>"
