@@ -78,7 +78,7 @@ from .tokens import (
 )
 from .tooltip import Tooltip
 
-__version__ = "1.1.3"
+__version__ = "1.1.4"
 __all__ = [
     "Toast",
     "Toggle",
