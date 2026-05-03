@@ -92,9 +92,7 @@ class Skeleton:
 
     def __init__(self, variant: str = "text", width: str | None = None):
         if variant not in self.VARIANTS:
-            raise ValueError(
-                f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}"
-            )
+            raise ValueError(f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}")
 
         self.variant = variant
         self.width = width

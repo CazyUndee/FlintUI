@@ -74,9 +74,7 @@ class Progress:
         if value < 0:
             raise ValueError("value cannot be negative")
         if variant not in self.VARIANTS:
-            raise ValueError(
-                f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}"
-            )
+            raise ValueError(f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}")
         if size not in self.SIZES:
             raise ValueError(f"Invalid size '{size}'. Must be one of {self.SIZES}")
 
@@ -112,13 +110,9 @@ class Progress:
 
         # Bar fill
         percentage = (self.value / self.max) * 100
-        bar_fill = (
-            f'<div class="cn-progress-bar" style="width: {percentage}%;"></div>'
-        )
+        bar_fill = f'<div class="cn-progress-bar" style="width: {percentage}%;"></div>'
 
-        parts.append(
-            f'<div class="{" ".join(bar_classes)}">{bar_fill}</div>'
-        )
+        parts.append(f'<div class="{" ".join(bar_classes)}">{bar_fill}</div>')
 
         return ProgressElement(inner_html="".join(parts))
 
@@ -202,9 +196,7 @@ class Stat:
             delta_classes = ["cn-stat-delta"]
             if self.delta_type:
                 delta_classes.append(f"cn-stat-delta-{self.delta_type}")
-            parts.append(
-                f'<div class="{" ".join(delta_classes)}">{self._esc(self.delta)}</div>'
-            )
+            parts.append(f'<div class="{" ".join(delta_classes)}">{self._esc(self.delta)}</div>')
 
         return ProgressElement(
             classes=["cn-stat"],

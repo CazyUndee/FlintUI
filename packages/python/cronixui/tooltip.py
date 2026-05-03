@@ -65,9 +65,7 @@ class Tooltip:
         if not content:
             raise ValueError("content cannot be empty")
         if position not in self.POSITIONS:
-            raise ValueError(
-                f"Invalid position '{position}'. Must be one of {self.POSITIONS}"
-            )
+            raise ValueError(f"Invalid position '{position}'. Must be one of {self.POSITIONS}")
 
         self.content = content
         self.position = position
@@ -78,9 +76,7 @@ class Tooltip:
         Returns:
             TooltipElement representing the tooltip
         """
-        inner = (
-            f'<div class="cn-tooltip-content">{self._esc(self.content)}</div>'
-        )
+        inner = f'<div class="cn-tooltip-content">{self._esc(self.content)}</div>'
 
         return TooltipElement(
             classes=["cn-tooltip", f"cn-tooltip-{self.position}"],

@@ -236,7 +236,7 @@ class FormField:
             FormElement wrapping the label, input, and optional messages
         """
         required_mark = ' <span class="cn-form-required">*</span>' if self.required else ""
-        label_text = f'{self._esc(self.label)}{required_mark}'
+        label_text = f"{self._esc(self.label)}{required_mark}"
 
         if hasattr(self.input, "render_html"):
             input_html = self.input.render_html()
@@ -335,7 +335,7 @@ class Checkbox:
 
         inner = (
             f'<label class="{label_classes}">'
-            f'<input{attrs_str} />'
+            f"<input{attrs_str} />"
             f'<span class="cn-checkbox-box"></span>'
             f'<span class="cn-checkbox-label">{self._esc(self.label)}</span>'
             f"</label>"
@@ -421,7 +421,7 @@ class Radio:
 
             parts.append(
                 f'<label class="cn-radio">'
-                f'<input{attrs_str} />'
+                f"<input{attrs_str} />"
                 f'<span class="cn-radio-box"></span>'
                 f'<span class="cn-radio-label">{self._esc(label)}</span>'
                 f"</label>"
@@ -622,7 +622,7 @@ class FileInput:
         '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>'
         '<polyline points="17 8 12 3 7 8"/>'
         '<line x1="12" y1="3" x2="12" y2="15"/>'
-        '</svg>'
+        "</svg>"
     )
 
     def __init__(
@@ -653,7 +653,7 @@ class FileInput:
 
         inner = (
             f'<div class="cn-file-input">'
-            f'<input{input_attrs_str} />'
+            f"<input{input_attrs_str} />"
             f'<div class="cn-file-input-label">'
             f'<div class="cn-file-input-icon">{self._UPLOAD_ICON}</div>'
             f'<div class="cn-file-input-text">Drag and drop or <span>browse</span></div>'
@@ -676,4 +676,5 @@ class HasRenderHtml:
     """Protocol-like base for type hints: any object with render_html()."""
 
     def render_html(self) -> str:
-        ...
+        """Render as HTML string."""
+        return ""

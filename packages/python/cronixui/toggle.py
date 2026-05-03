@@ -1,10 +1,12 @@
 """Toggle switch component."""
 
+from typing import Union
+
 
 class Toggle:
     """Toggle switch component."""
 
-    def __init__(self, element=None):
+    def __init__(self, element: Union[str, None] = None) -> None:
         """Initialize toggle on element."""
         self._element = element
         self._on: bool = False

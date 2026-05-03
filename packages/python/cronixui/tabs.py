@@ -1,10 +1,12 @@
 """Tabs component."""
 
+from typing import Union
+
 
 class Tabs:
     """Tabs component."""
 
-    def __init__(self, element=None):
+    def __init__(self, element: Union[str, None] = None) -> None:
         """Initialize tabs on element."""
         self._element = element
         self._active_index: int = 0

@@ -91,9 +91,7 @@ class Table:
             parts.append(f"<caption>{self._esc(self.caption)}</caption>")
 
         # Header
-        header_cells = "".join(
-            f"<th>{self._esc(h)}</th>" for h in self.headers
-        )
+        header_cells = "".join(f"<th>{self._esc(h)}</th>" for h in self.headers)
         parts.append(f"<thead><tr>{header_cells}</tr></thead>")
 
         # Body

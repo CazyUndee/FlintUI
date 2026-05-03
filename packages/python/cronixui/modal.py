@@ -1,10 +1,12 @@
 """Modal dialog component."""
 
+from typing import Union
+
 
 class Modal:
     """Modal dialog component."""
 
-    def __init__(self, element=None):
+    def __init__(self, element: Union[str, None] = None) -> None:
         """Initialize modal on element."""
         self._element = element
         self._open: bool = False

@@ -99,7 +99,7 @@ class Header:
         # Navigation
         nav_items_html = "".join(
             f'<a class="cn-btn cn-btn-ghost" href="{self._esc(item.href)}">'
-            f'{self._esc(item.text)}</a>'
+            f"{self._esc(item.text)}</a>"
             for item in self.nav_items
         )
         parts.append(f'<nav class="cn-header-nav">{nav_items_html}</nav>')
@@ -180,8 +180,8 @@ class Sidebar:
             active_class = " cn-sidebar-active" if item.active else ""
             item_html = f'<a class="cn-sidebar-item{active_class}" href="{self._esc(item.href)}">'
             if item.icon:
-                item_html += f'<span>{item.icon}</span>'
-            item_html += f'<span>{self._esc(item.text)}</span>'
+                item_html += f"<span>{item.icon}</span>"
+            item_html += f"<span>{self._esc(item.text)}</span>"
             item_html += "</a>"
             nav_parts.append(item_html)
 

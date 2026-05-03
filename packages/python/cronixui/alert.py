@@ -60,13 +60,13 @@ class Alert:
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">'
             '<circle cx="12" cy="12" r="10"/>'
             '<path d="M12 16v-4M12 8h.01"/>'
-            '</svg>'
+            "</svg>"
         ),
         "success": (
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">'
             '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>'
             '<polyline points="22 4 12 14.01 9 11.01"/>'
-            '</svg>'
+            "</svg>"
         ),
         "warning": (
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">'
@@ -74,14 +74,14 @@ class Alert:
             'a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>'
             '<line x1="12" y1="9" x2="12" y2="13"/>'
             '<line x1="12" y1="17" x2="12.01" y2="17"/>'
-            '</svg>'
+            "</svg>"
         ),
         "error": (
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">'
             '<circle cx="12" cy="12" r="10"/>'
             '<line x1="15" y1="9" x2="9" y2="15"/>'
             '<line x1="9" y1="9" x2="15" y2="15"/>'
-            '</svg>'
+            "</svg>"
         ),
     }
 
@@ -93,9 +93,7 @@ class Alert:
         dismissible: bool = False,
     ):
         if variant not in self.VARIANTS:
-            raise ValueError(
-                f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}"
-            )
+            raise ValueError(f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}")
         if not message:
             raise ValueError("message cannot be empty")
 
@@ -121,19 +119,13 @@ class Alert:
         # Content area
         content_parts = []
         if self.title:
-            content_parts.append(
-                f'<div class="cn-alert-title">{self._esc(self.title)}</div>'
-            )
-        content_parts.append(
-            f'<div class="cn-alert-message">{self._esc(self.message)}</div>'
-        )
+            content_parts.append(f'<div class="cn-alert-title">{self._esc(self.title)}</div>')
+        content_parts.append(f'<div class="cn-alert-message">{self._esc(self.message)}</div>')
         parts.append(f'<div class="cn-alert-content">{"".join(content_parts)}</div>')
 
         # Dismiss button
         if self.dismissible:
-            parts.append(
-                '<button class="cn-alert-close" data-dismiss="alert">&times;</button>'
-            )
+            parts.append('<button class="cn-alert-close" data-dismiss="alert">&times;</button>')
 
         inner = "".join(parts)
 

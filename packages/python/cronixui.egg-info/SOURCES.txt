@@ -5,6 +5,7 @@ cronixui/accordion.py
 cronixui/alert.py
 cronixui/avatar.py
 cronixui/badge.py
+cronixui/breadcrumb.py
 cronixui/button.py
 cronixui/card.py
 cronixui/command_palette.py

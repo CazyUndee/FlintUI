@@ -63,9 +63,7 @@ class Badge:
         if not text:
             raise ValueError("text cannot be empty")
         if variant not in self.VARIANTS:
-            raise ValueError(
-                f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}"
-            )
+            raise ValueError(f"Invalid variant '{variant}'. Must be one of {self.VARIANTS}")
 
         self.text = text
         self.variant = variant
@@ -129,7 +127,7 @@ class Tag:
     _REMOVE_ICON = (
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">'
         '<path d="M18 6L6 18M6 6l12 12"/>'
-        '</svg>'
+        "</svg>"
     )
 
     def __init__(
@@ -158,9 +156,7 @@ class Tag:
         inner_parts = [self._esc(self.text)]
 
         if self.removable:
-            inner_parts.append(
-                f'<span class="cn-tag-remove">{self._REMOVE_ICON}</span>'
-            )
+            inner_parts.append(f'<span class="cn-tag-remove">{self._REMOVE_ICON}</span>')
 
         return BadgeElement(
             classes=["cn-tag"],

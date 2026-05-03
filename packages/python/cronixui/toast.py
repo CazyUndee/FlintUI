@@ -1,7 +1,7 @@
 """Toast notification component."""
 
 from enum import Enum
-from typing import Optional
+from typing import Optional, Union
 
 
 class ToastType(Enum):
@@ -14,7 +14,7 @@ class ToastType(Enum):
 class Toast:
     """Toast notification component."""
 
-    def __init__(self, element=None):
+    def __init__(self, element: Union[str, None] = None) -> None:
         self._element = element
         self._title: Optional[str] = None
         self._message: str = ""

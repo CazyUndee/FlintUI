@@ -92,13 +92,9 @@ class Card:
         if self.title or self.subtitle:
             header_parts = []
             if self.title:
-                header_parts.append(
-                    f'<h3 class="cn-card-title">{self._esc(self.title)}</h3>'
-                )
+                header_parts.append(f'<h3 class="cn-card-title">{self._esc(self.title)}</h3>')
             if self.subtitle:
-                header_parts.append(
-                    f'<p class="cn-card-subtitle">{self._esc(self.subtitle)}</p>'
-                )
+                header_parts.append(f'<p class="cn-card-subtitle">{self._esc(self.subtitle)}</p>')
             parts.append(f'<div class="cn-card-header">{"".join(header_parts)}</div>')
 
         # Body
@@ -205,9 +201,7 @@ class CardIcon:
         if self.title:
             parts.append(f'<h3 class="cn-card-title">{self._esc(self.title)}</h3>')
         if self.subtitle:
-            parts.append(
-                f'<p class="cn-card-subtitle">{self._esc(self.subtitle)}</p>'
-            )
+            parts.append(f'<p class="cn-card-subtitle">{self._esc(self.subtitle)}</p>')
 
         return CardElement(
             classes=classes,

@@ -35,7 +35,7 @@ class ListElement:
         return self
 
 
-class List:
+class CronixList:
     """List component for displaying collections of items.
 
     Items can be simple strings or dictionaries with optional keys:
@@ -69,7 +69,7 @@ class List:
         >>> print(rich.render_html())
     """
 
-    def __init__(self, items: List[Any], clickable: bool = False):
+    def __init__(self, items: list[Any], clickable: bool = False):
         if not items:
             raise ValueError("items cannot be empty")
 
@@ -103,7 +103,7 @@ class List:
             inner_html="".join(item_parts),
         )
 
-    def _render_dict_item(self, item: dict, item_classes: List[str]) -> str:
+    def _render_dict_item(self, item: dict, item_classes: list[str]) -> str:
         """Render a single dict-based list item."""
         class_str = " ".join(item_classes)
         parts = [f'<div class="{class_str}">']
@@ -115,17 +115,11 @@ class List:
         # Content
         content_parts = []
         if title := item.get("title"):
-            content_parts.append(
-                f'<div class="cn-list-item-title">{self._esc(title)}</div>'
-            )
+            content_parts.append(f'<div class="cn-list-item-title">{self._esc(title)}</div>')
         if subtitle := item.get("subtitle"):
-            content_parts.append(
-                f'<div class="cn-list-item-subtitle">{self._esc(subtitle)}</div>'
-            )
+            content_parts.append(f'<div class="cn-list-item-subtitle">{self._esc(subtitle)}</div>')
         if content_parts:
-            parts.append(
-                f'<div class="cn-list-item-content">{"".join(content_parts)}</div>'
-            )
+            parts.append(f'<div class="cn-list-item-content">{"".join(content_parts)}</div>')
 
         # Actions
         if actions := item.get("actions"):
@@ -152,3 +146,7 @@ class List:
             .replace('"', "&quot;")
             .replace("'", "&#x27;")
         )
+
+
+# Backward compatibility alias - allows `from cronixui.list import List`
+List = CronixList

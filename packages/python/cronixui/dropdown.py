@@ -1,10 +1,12 @@
 """Dropdown menu component."""
 
+from typing import Union
+
 
 class Dropdown:
     """Dropdown menu component."""
 
-    def __init__(self, element=None):
+    def __init__(self, element: Union[str, None] = None) -> None:
         """Initialize dropdown on element."""
         self._element = element
         self._open: bool = False
