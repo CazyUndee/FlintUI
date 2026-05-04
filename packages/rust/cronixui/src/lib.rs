@@ -18,6 +18,9 @@
 //! }
 //! ```
 
+#[cfg(test)]
+pub mod tests;
+
 pub mod colors;
 pub mod tokens;
 pub mod components;

@@ -28,9 +28,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
           
       - name: Install dependencies
         working-directory: packages/react
