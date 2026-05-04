@@ -16,6 +16,9 @@
   "peerDependencies": {
     "solid-js": "^1.0.0"
   },
+  "scripts": {
+    "test": "echo 'No tests defined for Solid package' && exit 0"
+  },
   "keywords": ["solid", "solidjs", "ui", "dark-mode", "components"],
   "license": "GPL-3.0"
 }
