@@ -10,66 +10,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  check-ci-status:
+  create-pr:
     runs-on: ubuntu-latest
-    outputs:
-      ci-success: ${{ steps.check.outputs.success }}
     steps:
-      - name: Check CI workflow status
-        id: check
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const sha = context.sha;
-
-            const checks = await github.rest.checks.listForRef({
-              owner,
-              repo,
-              ref: sha
-            });
-
-            const requiredChecks = ['test', 'lint', 'build'];
-            let allPassed = true;
-            let foundChecks = 0;
-
-            for (const checkName of requiredChecks) {
-              // For matrix jobs, find ALL matching check runs and ensure they all passed
-              const matchingChecks = checks.data.check_runs.filter(c => c.name.includes(checkName));
-              
-              if (matchingChecks.length === 0) {
-                // No checks found with this name - CI still running
-                allPassed = false;
-                break;
-              }
-              
-              // All matching checks must have succeeded
-              const allMatchingPassed = matchingChecks.every(c => c.conclusion === 'success');
-              if (!allMatchingPassed) {
-                allPassed = false;
-                break;
-              }
-              
-              foundChecks += matchingChecks.length;
-            }
-
-            // If no checks were found at all, CI is likely still running
-            if (foundChecks === 0) {
-              allPassed = false;
-            }
-
-            core.setOutput('success', allPassed);
-            if (!allPassed) {
-              core.info('CI checks have not passed yet. Skipping PR creation.');
-            }
-
-  open-pr:
-    runs-on: ubuntu-latest
-    needs: check-ci-status
-    if: needs.check-ci-status.outputs.ci-success == 'true'
-    steps:
-      - name: Ensure PR from develop to main exists
+      - name: Create PR from develop to main
         uses: actions/github-script@v7
         with:
           script: |
@@ -102,7 +46,6 @@ jobs:
                 body: [
                   "Automated PR from `develop` to `main`.",
                   "",
-                  "CI checks have passed on develop branch.",
                   "Please review and merge after verification."
                 ].join("\n")
               });

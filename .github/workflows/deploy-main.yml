@@ -1,9 +1,11 @@
-name: Deploy to Main
+name: Publish to PyPI
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   python-ci:

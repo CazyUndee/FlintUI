@@ -1,0 +1,120 @@
+name: Rust CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'packages/rust/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'packages/rust/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust: [stable, beta, nightly]
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Rust ${{ matrix.rust }}
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          override: true
+          
+      - name: Cache Rust dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          
+      - name: Run tests
+        working-directory: packages/rust/cronixui
+        run: |
+          cargo test --verbose --all
+          cargo test --verbose --all --release  # Test release build
+          cargo test --verbose --all --bins
+        
+      - name: Run doc tests
+        working-directory: packages/rust/cronixui
+        run: cargo test --doc
+        
+      - name: Generate coverage
+        working-directory: packages/rust/cronixui
+        run: |
+          cargo tarpaulin --out Html --output-dir coverage/
+          cargo tarpaulin --out Json --output-dir coverage/
+        
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          directory: packages/rust/cronixui
+          files: ./coverage/tarpaulin.json
+          token: ${{ secrets.CODECOV_TOKEN }}
+          
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          
+      - name: Cache Rust dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          
+      - name: Run clippy
+        working-directory: packages/rust/cronixui
+        run: |
+          cargo clippy -- -D warnings --all-targets --all-features
+          
+      - name: Run rustfmt
+        working-directory: packages/rust/cronixui
+        run: |
+          cargo fmt -- --check
+        
+      - name: Check documentation
+        working-directory: packages/rust/cronixui
+        run: |
+          cargo doc --no-deps --document-private-items
+          
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          
+      - name: Cache Rust dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          
+      - name: Build release
+        working-directory: packages/rust/cronixui
+        run: |
+          cargo build --release
+          
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: rust-build-artifacts
+          path: packages/rust/cronixui/target/release/
+          retention-days: 30

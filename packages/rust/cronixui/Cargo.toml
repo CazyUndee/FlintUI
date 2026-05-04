@@ -13,3 +13,7 @@ egui = "0.27"
 
 [dev-dependencies]
 eframe = "0.27"
+
+[[bin]]
+name = "test_runner"
+path = "src/tests/lib_tests.rs"

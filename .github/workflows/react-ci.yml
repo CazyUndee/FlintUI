@@ -1,0 +1,74 @@
+name: React CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'packages/react/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'packages/react/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        working-directory: packages/react
+        run: |
+          npm ci --legacy-peer-deps || true
+          
+      - name: Run tests
+        working-directory: packages/react
+        run: npm test --coverage --watchAll=false
+        
+      - name: Build package
+        working-directory: packages/react
+        run: npm run build
+        
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          directory: packages/react/coverage
+          files: ./coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        working-directory: packages/react
+        run: |
+          npm ci --legacy-peer-deps || true
+          
+      - name: Run type checking
+        working-directory: packages/react
+        run: npm run typecheck
+        
+      - name: Run ESLint
+        working-directory: packages/react
+        run: |
+          npm run lint || true

@@ -1,0 +1,83 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'packages/flutter/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'packages/flutter/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        flutter-version: ['3.13.x', '3.16.x', '3.19.x']
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Flutter ${{ matrix.flutter-version }}
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ matrix.flutter-version }}
+          channel: 'stable'
+          cache: true
+          
+      - name: Install dependencies
+        working-directory: packages/flutter
+        run: flutter pub get
+        
+      - name: Analyze code
+        working-directory: packages/flutter
+        run: |
+          flutter analyze --fatal-infos
+          dart format --set-exit-if-changed .
+        
+      - name: Run tests
+        working-directory: packages/flutter
+        run: |
+          flutter test --coverage --reporter=expanded
+          flutter test --coverage --reporter=expanded integration_test/
+        
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          directory: packages/flutter/coverage
+          files: ./coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+          cache: true
+          
+      - name: Build web version
+        working-directory: packages/flutter
+        run: |
+          flutter build web --web-renderer canvaskit
+          
+      - name: Build APK
+        working-directory: packages/flutter
+        run: |
+          flutter build apk --release
+          
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: flutter-build-artifacts
+          path: packages/flutter/build/
+          retention-days: 30
