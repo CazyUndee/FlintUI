@@ -1,0 +1,99 @@
+name: CI Status Check
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  check-workflows:
+    runs-on: ubuntu-latest
+    outputs:
+      python-status: ${{ steps.python-check.outputs.status }}
+      react-status: ${{ steps.react-check.outputs.status }}
+      go-status: ${{ steps.go-check.outputs.status }}
+      flutter-status: ${{ steps.flutter-check.outputs.status }}
+      rust-status: ${{ steps.rust-check.outputs.status }}
+      web-status: ${{ steps.web-check.outputs.status }}
+      overall-status: ${{ steps.overall-check.outputs.status }}
+    
+    steps:
+      - name: Check Python workflows
+        id: python-check
+        run: |
+          if [ -f ".github/workflows/python-ci.yml" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=missing" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Check React workflows
+        id: react-check
+        run: |
+          if [ -f ".github/workflows/react-ci.yml" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=missing" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Check Go workflows
+        id: go-check
+        run: |
+          if [ -f ".github/workflows/go-ci.yml" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=missing" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Check Flutter workflows
+        id: flutter-check
+        run: |
+          if [ -f ".github/workflows/flutter-ci.yml" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=missing" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Check Rust workflows
+        id: rust-check
+        run: |
+          if [ -f ".github/workflows/rust-ci.yml" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=missing" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Check Web workflows
+        id: web-check
+        run: |
+          if [ -f ".github/workflows/web-ci.yml" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=missing" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Overall status
+        id: overall-check
+        run: |
+          if [ "${{ steps.python-check.outputs.status }}" = "success" ] && \
+             [ "${{ steps.react-check.outputs.status }}" = "success" ] && \
+             [ "${{ steps.go-check.outputs.status }}" = "success" ] && \
+             [ "${{ steps.flutter-check.outputs.status }}" = "success" ] && \
+             [ "${{ steps.rust-check.outputs.status }}" = "success" ] && \
+             [ "${{ steps.web-check.outputs.status }}" = "success" ]; then
+            echo "status=all_success" >> $GITHUB_OUTPUT
+          else
+            echo "status=partial" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Summary
+        run: |
+          echo "## CI Workflow Status Summary"
+          echo "- Python: ${{ steps.python-check.outputs.status }}"
+          echo "- React: ${{ steps.react-check.outputs.status }}"
+          echo "- Go: ${{ steps.go-check.outputs.status }}"
+          echo "- Flutter: ${{ steps.flutter-check.outputs.status }}"
+          echo "- Rust: ${{ steps.rust-check.outputs.status }}"
+          echo "- Web: ${{ steps.web-check.outputs.status }}"
+          echo "- Overall: ${{ steps.overall-check.outputs.status }}"
